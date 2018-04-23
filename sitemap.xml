@@ -8,12 +8,7 @@
   </url>
   
   <url>
-    <loc>https://ivymarkwell.github.io/post/my-first-post/</loc>
-    <lastmod>2018-04-09T21:26:53-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/project/my-first-project/</loc>
+    <loc>https://ivymarkwell.github.io/writing/my-first-post/</loc>
     <lastmod>2018-04-09T21:26:53-04:00</lastmod>
   </url>
   
@@ -29,19 +24,13 @@
   </url>
   
   <url>
-    <loc>https://ivymarkwell.github.io/post/</loc>
-    <lastmod>2018-04-09T21:26:53-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/project/</loc>
-    <lastmod>2018-04-09T21:26:53-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://ivymarkwell.github.io/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://ivymarkwell.github.io/writing/</loc>
+    <lastmod>2018-04-09T21:26:53-04:00</lastmod>
     <priority>0</priority>
   </url>
   

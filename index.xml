@@ -6,10 +6,21 @@
     <description>Recent content on Ivy Markwell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 May 2018 19:53:31 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 29 Jul 2018 17:19:26 -0400</lastBuildDate>
     
 	<atom:link href="https://ivymarkwell.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Portraits</title>
+      <link>https://ivymarkwell.github.io/photography/portraits/</link>
+      <pubDate>Sun, 29 Jul 2018 17:19:26 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/portraits/</guid>
+      <description>People and tiny peoples. 
+Tootie
+Nico Vergara</description>
+    </item>
     
     <item>
       <title>Cinco De Mayo</title>
@@ -35,7 +46,8 @@
       <pubDate>Mon, 09 Apr 2018 21:26:53 -0400</pubDate>
       
       <guid>https://ivymarkwell.github.io/about/</guid>
-      <description>I&amp;rsquo;ve spent a long time thinking that the things I had to do were things I was naturally good at. In school, I exceled in math courses so when I went to college I became a math major. I wasn&amp;rsquo;t passionate about math. When I was a sophomore in college, I took a software engineering course. It didn&amp;rsquo;t come naturally to me, but I liked it. I love being able to solve a logical problem and see the result.</description>
+      <description>Chicago, IL, USA
+I&amp;rsquo;ve spent a long time thinking that the things I had to do were things I was naturally good at. In school, I exceled in math courses so when I went to college I became a math major. I wasn&amp;rsquo;t passionate about math. When I was a sophomore in college, I took a software engineering course. It didn&amp;rsquo;t come naturally to me, but I liked it. I love being able to solve a logical problem and see the result.</description>
     </item>
     
   </channel>

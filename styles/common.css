@@ -1,3 +1,9 @@
+@media all and (max-width:480px) {
+    img {
+        display:block;margin:0 auto;
+    }
+}
+
 .center-title-container, .content-description-container {
     text-align: center;
 }

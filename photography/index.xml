@@ -6,10 +6,20 @@
     <description>Recent content in Photography on Ivy Markwell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 02 Aug 2019 15:15:04 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 06 Nov 2019 14:12:47 -0600</lastBuildDate>
     
 	<atom:link href="https://ivymarkwell.github.io/photography/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Code Mesh Ldn</title>
+      <link>https://ivymarkwell.github.io/photography/code-mesh-ldn/</link>
+      <pubDate>Wed, 06 Nov 2019 14:12:47 -0600</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/code-mesh-ldn/</guid>
+      <description>Code Mesh London is an amazing alternative tech confernece that focuses on functional programming languages, inspiring people to just code, and encouraging diversity.
+                       </description>
+    </item>
     
     <item>
       <title>Guanajuato, Mexico</title>

@@ -1,0 +1,341 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on Ivy Markwell</title>
+        <link>https://ivymarkwell.github.io/posts/</link>
+        <description>Recent content in Posts on Ivy Markwell</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Mon, 16 Sep 2019 15:00:00 -0500</lastBuildDate>
+        <atom:link href="https://ivymarkwell.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Creating a Custom User Confirmation Modal With the React Router Prompt</title>
+            <link>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</link>
+            <pubDate>Mon, 16 Sep 2019 15:00:00 -0500</pubDate>
+            
+            <guid>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</guid>
+            <description>Writing a custom UserConfirmation modal with the React Router Prompt A person up in arms about wanting custom modals in their Prompt component
+This is a short walkthrough on how to use React-Router’s v5 Promptcomponent to replace the built in user confirmation window object with your own custom UserConfirmation modal.
+There is another really good article about blocking the navigation to prevent the default modal so that we can render our own custom component instead.</description>
+            <content type="html"><![CDATA[
+
+<h3 id="writing-a-custom-userconfirmation-modal-with-the-react-router-prompt">Writing a custom UserConfirmation modal with the React Router Prompt</h3>
+
+<p><img src="https://cdn-images-1.medium.com/max/2400/1*lYSWM1q3d5jGuZxGDK6iwQ.jpeg" alt="" />
+<span class="figcaption_hack">A person up in arms about wanting custom modals in their Prompt component</span></p>
+
+<p>This is a short walkthrough on how to use React-Router’s v5 <code>Prompt</code>component
+to replace the built in user confirmation window object with your own custom
+<code>UserConfirmation</code> modal.</p>
+
+<p>There is another really <a href="https://medium.com/@michaelchan_13570/using-react-router-v4-prompt-with-custom-modal-component-ca839f5faf39">good
+article</a>
+about blocking the navigation to prevent the default modal so that we can render
+our own custom component instead. They briefly mention an alternative method
+that involves utilizing <code>BrowserRouter</code> and the <code>getUserConfirmation</code> prop,
+which is exactly the solution this post covers!</p>
+
+<h3 id="briefly-behind-the-scenes">Briefly Behind the Scenes</h3>
+
+<p>Without going into too much detail, essentially you can trace the <code>Prompt</code>
+component all the way through <code>RouterContext</code>, <code>Router</code> and <code>BrowserRouter</code>.</p>
+
+<p><code>BrowserRouter</code> is where the magic begins. Specifically where the history prop
+is created on <a href="https://github.com/ReactTraining/react-router/blob/v5.0.0/packages/react-router-dom/modules/BrowserRouter.js">line
+11</a>.
+<code>react-router</code> uses <code>createBrowserHistory</code> to create our rendered history prop
+as an extension of the <code>window.history</code> that’s available in any browser. If you
+look in <code>createBrowserHistory</code>, you’ll also see the final layer of our
+confirmation window which comes from the initialization of <code>getUserConfirmation</code>
+from <code>getConfirmation</code> defined in <code>DomUtils</code>. This is where the default modal
+gets defined as a window object.</p>
+
+<pre><code>export function getConfirmation(message, callback) {
+   callback(window.confirm(message));
+}
+</code></pre>
+
+<h3 id="creating-our-custom-userconfirmation-modal">Creating our Custom UserConfirmation modal</h3>
+
+<p>Since we are opting out of the window object and replacing it with our own
+custom component, we not only need to render a nicer modal but we also need to
+include all of the functionality for canceling and confirming the callback.</p>
+
+<p>Remember that <code>getUserConfirmation</code> is initialized in <code>BrowserRouter</code> and is
+what determines what our confirmation modal displays. So wherever you’re
+initializing your application with <code>BrowserRouter</code> is where we’re going to pass
+our custom component into the <code>getUserConfirmation</code> prop.</p>
+
+<p>And you’re ready to go! You’re now overwriting the default window component and
+rendering your own custom <code>UserConfirmation</code> (even if it might not exist yet).</p>
+
+<p>So let’s make it happen!</p>
+
+<pre><code>import React from &quot;react&quot;;
+import ReactDOM from &quot;react-dom&quot;;
+import { Dialog } from &quot;evergreen-ui&quot;
+
+const UserConfirmation = (message, callback) =&gt; {
+   const container = document.createElement(&quot;div&quot;);
+   container.setAttribute(&quot;custom-confirmation-navigation&quot;, &quot;&quot;);
+   document.body.appendChild(container);
+
+   const closeModal = (callbackState) =&gt; {
+      ReactDOM.unmountComponentAtNode(container);
+      callback(callbackState);
+   };
+
+   ReactDOM.render(
+      &lt;Dialog
+         cancelLabel=&quot;Cancel&quot;
+         confirmLabel=&quot;Confirm&quot;
+         isShown={true}
+         onCacel={() =&gt; closeModal(false)}
+         onConfirm={() =&gt; closeModal(true)}
+         title=&quot;Warning&quot;
+      &gt;
+       {message}
+      &lt;/Dialog&gt;,
+   container
+  );
+};
+
+export default UserConfirmation;
+</code></pre>
+
+<p>There are a few key things that we needed to happen in our custom component
+besides the UI. Since <code>BrowserRouter</code> and our custom component is rendered a
+layer above where our normal application is rendered, we start by initializing a
+container that we use to directly render the modal. Then we actually define what
+the container is rendering.</p>
+
+<p>This is where we create the functionality of closing the modal through either a
+cancel or confirm action. In our <code>closeModal</code> function we unmount our manually
+rendered component and either push the user to the next location or stay at the
+location whether the <code>Prompt</code> was triggered. Fortunately, the callback function
+that is passed from <code>Prompt</code> makes sending the user to the next location or
+staying on the page really simple for us. All we need to pass <code>callback</code> is a
+boolean that tells us whether the user wants to proceed with going to their next
+location or doesn’t. So, when the user clicks “Cancel” we can call
+<code>callback(false)</code> and likewise when they click “OK” we call <code>callback(true)</code>.</p>
+
+<p>And that’s it! You’re done.</p>
+
+<h3 id="but-i-want-more-than-a-message-and-a-callback">But I want more than a message and a callback</h3>
+
+<p>This is the part where most people would choose another solution because they
+want additional customization of the modal that go outside the two props that
+are given to us.</p>
+
+<p>Sadly, that is a legitimate concern. We can attempt to alleviate this a little
+by a manipulating our <code>message</code> prop. Our <code>Prompt</code> component will only accept a
+string into <code>message</code>. So what we can do here is pass in a stringified JSON
+object with key-value pairs of things we’d like to have additional control over
+and then parse them out later.</p>
+
+<pre><code>&lt;Prompt
+   when={when}
+   message={
+      JSON.stringify(
+         `{
+           &quot;confirmText&quot;: &quot;Continue&quot;,
+           &quot;messageText&quot;: &quot;It looks like you might have some unsaved
+                       changes! Are you sure you want to continue?&quot;,
+           &quot;cancelText&quot;: &quot;Do not Continue&quot;
+          }`
+      )
+   }
+/&gt;
+</code></pre>
+
+<p>Then in our <code>UserConfirmation</code> modal instead of using <code>message</code> directly to
+display text we need to create a <code>textObj</code> that we use to reference our
+customized text keys.</p>
+
+<pre><code>const textObj = JSON.parse(message);
+
+&lt;Dialog
+   cancelLabel={textObj.cancelText}
+   confirmLabel={textObj.confirmText}
+   isShown={true}
+   onCacel={() =&gt; closeModal(false)}
+   onConfirm={() =&gt; closeModal(true)}
+   title=&quot;Warning&quot;
+&gt;
+   {textObj.messageText}
+&lt;/Dialog&gt;
+</code></pre>
+
+<p>Now we’re at least going beyond a one dimensional modal that only allows us to
+customize the prompt message displayed to the user. Similarly, you could use the
+message prop to conditionally determine what to render. If we hadn’t passed for
+example a <code>cancelText</code>, then in our Evergreen <code>Dialog</code> we could choose to set
+<code>hasCancel</code> to false so we’re only rendering a confirm button and not a close
+icon.</p>
+
+<hr />
+
+<p>If you have any questions or feedback please leave a comment below! You can
+follow me on <a href="https://medium.com/@ivymarkwell">Medium</a> and
+<a href="https://github.com/ivymarkwell">Github</a> to see more fun stuff I’m working on.
+Special thanks to <a href="https://medium.com/u/f27d2add6165">Joerg Baier</a> for helping
+me work through and understand this solution and many of my other coworkers at
+<a href="https://rabbet.com/">Rabbet</a> for giving me helpful feedback on this article.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Create and Deploying Your First Hugo Site to Github Pages</title>
+            <link>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</link>
+            <pubDate>Sun, 29 Apr 2018 15:00:00 +0000</pubDate>
+            
+            <guid>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</guid>
+            <description>Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
+This is a comprehensive guide for creating your first static site using Hugo and hosting it on GitHub pages.
+Creating your site First, make sure you have Hugo installed on your machine.
+Now you can run these commands to make your first site.
+And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!</description>
+            <content type="html"><![CDATA[
+
+<h3 id="creating-and-deploying-your-first-hugo-site-to-github-pages">Creating and deploying your first Hugo site to Github pages</h3>
+
+<p><img src="https://cdn-images-1.medium.com/max/2400/1*BDKgDXTBKX3z7x6ij5Z7xQ.jpeg" alt="" />
+<span class="figcaption_hack">A local duck I photographed recently</span></p>
+
+<p>This is a comprehensive guide for creating your first static site using Hugo and
+hosting it on GitHub pages.</p>
+
+<h3 id="creating-your-site"><strong>Creating your site</strong></h3>
+
+<p>First, make sure you have <a href="https://gohugo.io/getting-started/installing/">Hugo</a>
+installed on your machine.</p>
+
+<p>Now you can run these commands to make your first site.</p>
+
+<p>And there you go! You’ve created your first Hugo site. I mean, there’s nothing
+in it, but still! Let’s take a look.</p>
+
+<pre><code>hugo server -D
+</code></pre>
+
+<p>Your web server by default should be hosted at
+<a href="http://localhost:1313/">http://localhost:1313/.</a></p>
+
+<p>There should be nothing here. We have to add themes, content, and lots of other
+fun stuff.</p>
+
+<p>If you navigate to <a href="https://themes.gohugo.io/">Hugo,</a> you can see a complete
+list of themes that you can use to style your site. In my own personal Hugo site
+I, use <a href="https://themes.gohugo.io/minimal/">Minimal</a>, so let’s start there. First
+we need to initialize our Github repo, add the theme as a submodule in
+<code>themes/minimal</code> and copy the default config file for that theme.</p>
+
+<pre><code>git init
+</code></pre>
+
+<p>Now when you host your server, you should notice that you have the exact <a href="https://themes.gohugo.io/theme/minimal/">demo
+page</a> shown on the theme’s page.</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*fsJe92qbKtKv_BmrjvV_8Q.png" alt="" />
+<span class="figcaption_hack">Hugo’s Demo Page</span></p>
+
+<p>Once that is set up, you should be able to customize it! If you navigate back to
+our Minimal theme’s documentation page you should find a small guide on using
+the parameters to customize the aesthetics of your site.</p>
+
+<p>Once you’re done making your site *beautiful, *you can navigate back to Hugo’s
+<a href="https://gohugo.io/getting-started/quick-start/">Getting Started page</a> and
+generate actual content for your site. Generating content on your Hugo site is
+super important because Hugo won’t generate your subpages unless there is
+content to display (or if your content is in <code>draft: true</code>).</p>
+
+<h3 id="deploying"><strong>Deploying</strong></h3>
+
+<p>This is where things get tricky.</p>
+
+<p>Github pages doesn’t natively support Hugo like it does Jekyll (another SSG) so
+we’re going to have to create two Github repositories; one to hold your Hugo
+site and files, and one to hold the HTML files we have to generate for your
+actual Github page to read and render. Once you’ve created your remote repos on
+Github <code>&lt;username&gt;.github.io</code> and <code>hugo_site</code> we need to connect them to the
+site we just made.</p>
+
+<p>First, let’s sync our repo and our code base and add
+<code>&lt;github_username.github.io&gt;</code> as a submodule to our existing repo just like our
+theme.</p>
+
+<pre><code>git remote add origin
+:&lt;github_username&gt;/hugo_site.git
+git add .
+git commit -m &quot;Initial commit for our Hugo site.&quot;
+</code></pre>
+
+<p>Remember, this only pushes to <code>hugo_site</code> . We still need to generate our html
+pages for our <code>&lt;github_username&gt;</code> repo. Hugo already has a built in command,
+<code>Hugo</code>, that generates your files to a <code>Public</code> folder. We need to change our
+<code>config.toml</code> file to output our HTML files to our submodule
+<code>&lt;github_username&gt;.github.io</code>.</p>
+
+<p>Open your <code>config.toml</code>:</p>
+
+<pre><code>baseURL = &quot;
+&quot;
+languageCode = &quot;en-us&quot;
+title = &quot;Minimal&quot;
+theme = &quot;minimal&quot;
+disqusShortname = &quot;username&quot; # delete this to disable disqus comments
+googleAnalytics = &quot;&quot;
+publishDir = &quot;&lt;github_username&gt;.github.io&quot;
+</code></pre>
+
+<p>The default <code>config.toml</code> for the Minimal theme should look a little like this.
+However, here we added in <code>publishDir</code>. This tells Hugo where to create our HTML
+files from the content in our Hugo site.</p>
+
+<p>Let’s generate them by running the following command:</p>
+
+<pre><code>hugo
+</code></pre>
+
+<p>And that should be it. Hugo already comes built with a simple command to
+generate the HTML from any of the customizable content in your site. If you look
+in your <code>&lt;github_username&gt;.github.io</code> folder now you should see HTML and CSS
+files, stuff that Github pages understands!</p>
+
+<p>Before we finally deploy, we need to make sure our remotes our set up correctly
+one last time.</p>
+
+<pre><code>cd &lt;github_username&gt;.github.io
+git remote -v
+&gt; origin
+:&lt;github_username&gt;/&lt;github_username&gt;.github.io.git (fetch)
+&gt; origin
+:&lt;github_username&gt;/&lt;github_username&gt;.github.io.git (push)
+</code></pre>
+
+<p>Now let’s host it!</p>
+
+<pre><code>git add .
+git commit -m &quot;Oh my goodness, I'm hosting my first Hugo website!&quot;
+git push origin master
+</code></pre>
+
+<p>Go to your Github page <code>&lt;github_username&gt;.github.io</code>. You should see your very
+own custom Hugo site!</p>
+
+<hr />
+
+<p>If you have any trouble please leave a comment below! You can follow me on
+<a href="https://medium.com/@ivymarkwell">Medium</a> and
+<a href="https://github.com/ivymarkwell">Github</a> to see more fun stuff I’m working on.
+I’m also a moderator of a programming <a href="https://www.twitch.tv/floatingdev">Twitch
+channel</a> you can check out to see how small
+open source packages are made!</p>
+
+<p>If you want to see what else our engineering team is working on, come <a href="https://www.getambassador.com/culture-outcare?ref=careers">join
+us</a> at Ambassador!</p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>

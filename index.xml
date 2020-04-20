@@ -32,6 +32,17 @@
     </item>
     
     <item>
+      <title>Creating a Custom User Confirmation Modal With the React Router Prompt</title>
+      <link>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</link>
+      <pubDate>Mon, 16 Sep 2019 15:00:00 -0500</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</guid>
+      <description>Writing a custom UserConfirmation modal with the React Router Prompt A person up in arms about wanting custom modals in their Prompt component
+This is a short walkthrough on how to use React-Router’s v5 Promptcomponent to replace the built in user confirmation window object with your own custom UserConfirmation modal.
+There is another really good article about blocking the navigation to prevent the default modal so that we can render our own custom component instead.</description>
+    </item>
+    
+    <item>
       <title>Guanajuato, Mexico</title>
       <link>https://ivymarkwell.github.io/photography/mexico-five/</link>
       <pubDate>Fri, 02 Aug 2019 15:15:04 -0500</pubDate>
@@ -195,6 +206,19 @@
       <guid>https://ivymarkwell.github.io/photography/cinco-de-mayo/</guid>
       <description>Cinco de Mayo is the celebration of the victory of the Battle of Puebla on May 5th, 1862. Detroit holds a yearly parade in Mexican Town where they drive down the streets and throw candy for the kids.
                    </description>
+    </item>
+    
+    <item>
+      <title>Create and Deploying Your First Hugo Site to Github Pages</title>
+      <link>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</link>
+      <pubDate>Sun, 29 Apr 2018 15:00:00 +0000</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</guid>
+      <description>Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
+This is a comprehensive guide for creating your first static site using Hugo and hosting it on GitHub pages.
+Creating your site First, make sure you have Hugo installed on your machine.
+Now you can run these commands to make your first site.
+And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!</description>
     </item>
     
     <item>

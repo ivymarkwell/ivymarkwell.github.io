@@ -126,8 +126,7 @@ and also create the event handler in the LiveView, <code>minesweeper_live.ex</co
 itself that will update the state of our application to start the new game.</p>
 
 <pre><code>// index.html.leex, live layout file
-&lt;span phx-click=&quot;restart-game&quot; class=&quot;status &lt;%=
- %&gt;&quot;/&gt;
+&lt;span phx-click=&quot;restart-game&quot; class=&quot;status &lt;%= @game_status %&gt;&quot;/&gt;
 
 // minesweeper_live.ex, the LiveView file
 def handle_event(&quot;restart-game&quot;, _key, socket) do

@@ -82,7 +82,7 @@ application.</li>
 initial request of the application, create the client connection to the server
 via web sockets (this happens specifically in the <code>app.js</code> script), and also
 where the embeded LiveView layout will be rendered later using the <code>&lt;%=
-@inner_content&gt;</code> tag.</li>
+@inner_content %&gt;</code> tag.</li>
 </ul>
 
 <p><img src="https://cdn-images-1.medium.com/max/800/1*qetD22xhWGdQDQ44LkrrAA.png" alt="" />

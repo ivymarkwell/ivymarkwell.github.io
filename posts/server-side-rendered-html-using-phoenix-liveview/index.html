@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+    content="Ivy Markwell ">
+<meta name="description"
+    content="Server-side rendered HTML using Phoenix LiveView “LiveView” television
+After attending the 2019 Lone Star Elixir conference in Austin, Texas and hearing the release of Phoenix LiveView announced, I decided I wanted to jump on the train of dabbling in LiveView. At the time, a lot of the examples being released were mini games which is what initially inspired me to recreate Minesweeper! After reading this you should understand what LiveView is, know some of the advantages and disadvantages of server side rendered HTML, and have an insight into how I used LiveView to build a clone of Minesweeper." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/" />
+
+
+<title>
+    
+    Server Side Rendered HTML Using Phoenix Liveview :: Ivy Markwell 
+    
+</title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.e0b07763b1eb2f03e58676ebc697857662aa8f0538674a9ee9e1f57819ff3d5c.css">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#252627"><meta itemprop="name" content="Server Side Rendered HTML Using Phoenix Liveview">
+<meta itemprop="description" content="Server-side rendered HTML using Phoenix LiveView “LiveView” television
+After attending the 2019 Lone Star Elixir conference in Austin, Texas and hearing the release of Phoenix LiveView announced, I decided I wanted to jump on the train of dabbling in LiveView. At the time, a lot of the examples being released were mini games which is what initially inspired me to recreate Minesweeper! After reading this you should understand what LiveView is, know some of the advantages and disadvantages of server side rendered HTML, and have an insight into how I used LiveView to build a clone of Minesweeper.">
+
+
+<meta itemprop="datePublished" content="2020-04-20T12:00:00-05:00" />
+<meta itemprop="dateModified" content="2020-04-20T12:00:00-05:00" />
+<meta itemprop="wordCount" content="1439">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Server Side Rendered HTML Using Phoenix Liveview"/>
+<meta name="twitter:description" content="Server-side rendered HTML using Phoenix LiveView “LiveView” television
+After attending the 2019 Lone Star Elixir conference in Austin, Texas and hearing the release of Phoenix LiveView announced, I decided I wanted to jump on the train of dabbling in LiveView. At the time, a lot of the examples being released were mini games which is what initially inspired me to recreate Minesweeper! After reading this you should understand what LiveView is, know some of the advantages and disadvantages of server side rendered HTML, and have an insight into how I used LiveView to build a clone of Minesweeper."/>
+
+
+
+
+<meta property="article:published_time" content="2020-04-20 12:00:00 -0500 CDT" />
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/"
+    style="text-decoration: none;">
+    <div class="logo">
+        
+        <span class="logo__arrow">➜&nbsp;</span>
+        <span class="logo__tilde">~&nbsp;</span>
+        <span class="logo__text">cd ivymarkwell/</span>
+        <span class="logo__cursor"></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://ivymarkwell.github.io/about">About</a></li><li><a href="https://ivymarkwell.github.io/photography">Photography</a></li><li><a href="https://ivymarkwell.github.io/posts">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>7 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title"><a href="https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/">Server Side Rendered HTML Using Phoenix Liveview</a></h1>
+
+            
+
+            <div class="post-content">
+                
+
+<h3 id="server-side-rendered-html-using-phoenix-liveview">Server-side rendered HTML using Phoenix LiveView</h3>
+
+<p><img src="https://cdn-images-1.medium.com/max/1200/1*u3zVa7gitgik5q_OYOm_2g.jpeg" alt="" />
+<span class="figcaption_hack">“LiveView” television</span></p>
+
+<p>After attending the 2019 Lone Star Elixir conference in Austin, Texas and
+hearing the release of Phoenix LiveView announced, I decided I wanted to jump on
+the train of dabbling in LiveView. At the time, a lot of the examples being
+released were mini games which is what initially inspired me to recreate
+<a href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)">Minesweeper</a>! After
+reading this you should understand what LiveView is, know some of the advantages
+and disadvantages of server side rendered HTML, and have an insight into how I
+used LiveView to build a clone of Minesweeper.</p>
+
+<h3 id="what-is-liveview">What is LiveView?</h3>
+
+<p>LiveView is a <a href="https://hex.pm/packages/phoenix_live_view">hex library</a> for
+managing application state and delivering server rendered HTML. To understand
+the LiveView lifecycle, we’ll first take a look at the different
+<a href="https://hexdocs.pm/phoenix/templates.html">templates</a> used by a LiveView
+application.</p>
+
+<p>There are <a href="https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-live-layouts">3
+layouts</a>
+(templates that render other templates) that are now in a Phoenix application:</p>
+
+<ul>
+<li>the root layout, <code>root.html.eex</code> — this is the layout shared between LiveView
+and regular templates; this is rendered only on the initial request for the
+application and then is used to render other templates</li>
+<li>the app layout, <code>app.html.eex</code> — this is the default template in Phoenix that
+lives outside of the LiveView library (meaning that it’s irrelevant in a
+strictly LiveView application)</li>
+<li>the live layout, <code>live.html.leex</code> — this is the LiveView template that has
+access to the state of the application and is updated as apart of the LiveView
+request life cycle</li>
+</ul>
+
+<p>LiveView starts by rendering the root layout on the initial request, and then
+establishes a connection with the client through <a href="https://hexdocs.pm/phoenix/channels.html">Phoenix
+Channels</a>. <code>phx-</code>
+<a href="https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-bindings">bindings</a>
+defined in the live template dictate when events are fired off by the client,
+and then associated event handlers in the LiveView file will make appropriate
+updates to the application state. Anytime the state of the application is
+updated, LiveView will retrigger the <code>render</code> function that contains your live
+layout, <code>index.html.leex</code> and rerender the page for the user. Meaning you got
+yourself stateful Elixir rendered HTML.</p>
+
+<p>Understanding LiveView for me really came down to these 3 files:</p>
+
+<ul>
+<li><code>router.ex</code> — where we assign our LiveView and define the root layout for our
+application.</li>
+</ul>
+
+<p><img src="https://cdn-images-1.medium.com/max/800/1*9qd9hZihawqZYwLli5LaGw.png" alt="" />
+<span class="figcaption_hack"><code>router.ex</code> file</span></p>
+
+<ul>
+<li><code>root.html.eex</code> — our root layout. This is the view that will be rendered on the
+initial request of the application, create the client connection to the server
+via web sockets (this happens specifically in the <code>app.js</code> script), and also
+where the embeded LiveView layout will be rendered later using the <code>&lt;%=
+@inner_content&gt;</code> tag.</li>
+</ul>
+
+<p><img src="https://cdn-images-1.medium.com/max/800/1*qetD22xhWGdQDQ44LkrrAA.png" alt="" />
+<span class="figcaption_hack"><code>root.html.eex</code> file</span></p>
+
+<ul>
+<li><code>*_live.ex</code> — the “LiveView”. This is where the state of the application is
+iterated on and where the LiveView layout, <code>.leex</code> template extension, gets
+rendered using the <code>render/1</code> function. <code>render/1</code> can return inline HTML or an
+<code>index.html.leex</code> file.</li>
+</ul>
+
+<p><img src="https://cdn-images-1.medium.com/max/800/1*w7skEA13qmFFGuO0-WYIQg.png" alt="" />
+<span class="figcaption_hack"><code>*_live.ex</code> file</span></p>
+
+<h3 id="recreating-minesweeper-and-implementing-event-handlers">Recreating Minesweeper and implementing event handlers</h3>
+
+<p>(You can checkout and play my Minesweeper game
+<a href="https://github.com/ivymarkwell/minesweeper">here</a>!)</p>
+
+<p>The hardest part of writing my LiveView application had nothing to do with
+LiveView; it was figuring out the Minesweeper logic itself (let me know if you
+find any bugs!). All of the logic in some way involved implementing the event
+handlers to track the current state of the game and display it to the user.</p>
+
+<p>In the <code>*_live.ex</code> file diagram above, I briefly mentioned that the <code>mount/3</code>
+function will initialize the state of the application. The state in a LiveView
+is <a href="https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-assigns-and-liveeex-templates">stored in the socket as
+assigns.</a>
+Meaning that we can access a particular state key by using
+<code>socket.assigns.state_key</code> (in the LiveView itself) or by accessing it in the
+LiveView template with the notation <code>@state_key</code>.</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/800/1*8mujz9tJaEc_gDYH1xlqlg.png" alt="" />
+<span class="figcaption_hack">Minesweeper!</span></p>
+
+<p>Let’s go through an example! A really simple feature is that clicking the face
+on the board will start a new game. In order to do this we need to add an event
+binding in our Live layout, <code>index.html.leex</code>, that will listen to click events,
+and also create the event handler in the LiveView, <code>minesweeper_live.ex</code> file
+itself that will update the state of our application to start the new game.</p>
+
+<pre><code>// index.html.leex, live layout file
+&lt;span phx-click=&quot;restart-game&quot; class=&quot;status &lt;%=
+ %&gt;&quot;/&gt;
+
+// minesweeper_live.ex, the LiveView file
+def handle_event(&quot;restart-game&quot;, _key, socket) do
+   # randomly generate initial mines with random coordinates
+   random_initial_x = Enum.random(1..@rows)
+   random_initial_y = Enum.random(1..@columns)
+
+   new_socket =
+      socket
+      |&gt; new_game(random_initial_x, random_initial_y)
+
+   {:noreply, new_socket}
+end
+</code></pre>
+
+<p>To keep things simple, we can determine whether we’ve started a new game by
+looking only at the <code>@game_status</code> socket value. <code>@game_status</code> is one of the
+many state keys that I implemented in my <code>mount/3</code> function that were
+initialized when the page was rendered. If the <code>@game_status</code> value is “dead”,
+meaning the user has lost the game, then we will see the frowny face. When the
+user starts a new game, the value should get updated to “alive” and the face
+should return to a happy face.</p>
+
+<p>Using
+<a href="https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-bindings">bindings</a>
+we can do this really easily. LiveView uses the <code>phx-click</code> binding to listen to
+click events and send them to the server. In my LiveView layout, I define the
+<code>phx-click=&quot;restart-game&quot;</code> binding on the <code>&lt;span&gt;</code> wrapping the face, so that
+when the user clicks the face an event is fired. Then, in my LiveView file there
+is an equivalent event handler, <code>handle_event(&quot;restart-game&quot;)</code> that will receive
+the event and start a new game!</p>
+
+<p>Whenever we’re initializing or updating the state of our application we always
+return the socket with our new state attributes using the <code>assign/2</code> and
+<code>assign/3</code> function helpers. The assign function helpers take in the existing
+socket and a list of key/value state attributes and return the updated socket.
+So in the above code snippet, <code>new_game/3</code> is actually just a function that
+returns the output of the <code>assign/3</code> function with the new state attributes like
+this:</p>
+
+<pre><code>defp new_game(socket, _, _) do
+   assign(socket,
+      game_status: &quot;alive&quot;,
+      ...
+   )
+end
+</code></pre>
+
+<p>And just like that, we’ve created a click event handler that will start a new
+game!</p>
+
+<h3 id="advantages-and-disadvantages">Advantages and Disadvantages</h3>
+
+<p>Let’s start off by saying LiveView is super fast. Not only because of the
+persistent client connection but LiveView also uses DOM-diffing. When the state
+is updated and the page is rerendered, LiveView uses DOM-diffing to update the
+page. This prevents the entire page from being rerendered and instead only the
+parts of the DOM that have been updated.</p>
+
+<p>LiveView is also nice when you don’t want to have to manage both the client and
+the server. By no means is LiveView a replacement for Javascript frameworks that
+offer more complex interfaces, however there are instances where you want to
+enable real-time user interaction without the large overhead of a framework.
+This gives Elixir developers the option to create interactive applications
+without having to write or manage any Javascript.</p>
+
+<p>Ironically, LiveView’s best use cases are usually <em>not</em> games. In fact, LiveView
+is a little unnecessary in these cases because we’re making server requests when
+we might not need to. In my Minesweeper example, I could have written this just
+as a simple Javascript application with no concept of a backend. LiveView would
+have been more useful in this instance if I had created score keeping. This
+would have allowed me to update scores in real time for users. As Chris McCord
+said, LiveView’s best uses cases can be seen in</p>
+
+<blockquote>
+<p>simple real-time updates, client-side style validations with immediate feedback,
+[and] autocomplete inputs</p>
+</blockquote>
+
+<p>Lastly, LiveView has no offline capacity and could be a lot of demand on your
+host provider. Remember, every instance of your application will be creating a
+unique connection from the client which after many connections can either cause
+your application to lag or end up just costing you money from your provider.</p>
+
+<hr />
+
+<p>There are a lot of helpful <a href="https://github.com/ivymarkwell/phoenix-liveview-counter-tutorial">step by step
+tutorials</a> on
+how to get your first LiveView application up and running. Most of the work will
+be making your own unique application by updating the LiveView template to
+create the view you want and implementing the event handlers that will update
+your state.</p>
+
+<p>LiveView is still under active development and so unfortunately some guides are
+already becoming outdated. The best way to keep up to date is to follow the
+<a href="https://github.com/phoenixframework/phoenix_live_view/blob/master/CHANGELOG.md">changelogs</a>.
+There’s already hype (mostly me) around the new command, <code>mix phx.new --live</code>,
+which will allow users to quickly initialize a LiveView application. Hopefully
+as more updates come out this makes starting your own LiveView project even
+easier.</p>
+
+<p>I hope you’re all staying safe during these hard times! Let me know if you have
+any feedback in the comments below! I read a lot of other great articles that
+helped solidify my understanding of LiveView and am really grateful Elixir has
+such an amazing community to learn. As always, you can follow me on
+<a href="https://medium.com/@ivymarkwell">Medium</a> and
+<a href="https://github.com/ivymarkwell">Github</a> to see what else I’m working on and
+thanks for reading. 😊</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1439 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-04-20 12:00 -0500</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/">
+                                <span class="button__text">Creating a Custom User Confirmation Modal With the React Router Prompt</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__content">
+      <span>
+        Powered by <a href="http://gohugo.io">Hugo</a>
+      </span>
+      <span>
+        Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="/bundle.min.4c3fb12a087ceed4a52cb5d57068a9795c7069617a01ca70f788052ad66e1791779e6c72686e1dc0ca13dc03b0203204b6566bb0dd1ee80de2b7ff4d8fe53db2.js" integrity="sha512-TD&#43;xKgh87tSlLLXVcGipeVxwaWF6Acpw94gFKtZuF5F3nmxyaG4dwMoT3AOwIDIEtlZrsN0e6A3it/9Nj&#43;U9sg=="></script>
+
+
+
+    </body>
+</html>

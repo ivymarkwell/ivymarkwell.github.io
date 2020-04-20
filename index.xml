@@ -6,10 +6,20 @@
     <description>Recent content on Ivy Markwell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Nov 2019 14:55:59 -0600</lastBuildDate>
+    <lastBuildDate>Mon, 20 Apr 2020 12:00:00 -0500</lastBuildDate>
     
 	<atom:link href="https://ivymarkwell.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Server Side Rendered HTML Using Phoenix Liveview</title>
+      <link>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</link>
+      <pubDate>Mon, 20 Apr 2020 12:00:00 -0500</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</guid>
+      <description>Server-side rendered HTML using Phoenix LiveView “LiveView” television
+After attending the 2019 Lone Star Elixir conference in Austin, Texas and hearing the release of Phoenix LiveView announced, I decided I wanted to jump on the train of dabbling in LiveView. At the time, a lot of the examples being released were mini games which is what initially inspired me to recreate Minesweeper! After reading this you should understand what LiveView is, know some of the advantages and disadvantages of server side rendered HTML, and have an insight into how I used LiveView to build a clone of Minesweeper.</description>
+    </item>
     
     <item>
       <title>London, UK</title>

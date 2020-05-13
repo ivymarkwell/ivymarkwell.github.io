@@ -23,6 +23,13 @@
   margin: 2em;
 }
 
+.content-mobile-long-shadow-container {
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+  padding: 2em;
+  padding-left: 30%;
+  margin: 2em;
+}
+
 .name-container {
   text-align: center;
   font-weight: bold;

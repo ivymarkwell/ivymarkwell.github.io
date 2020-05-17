@@ -24,16 +24,6 @@ My kitty soulmate.
     </item>
     
     <item>
-      <title>Server Side Rendered HTML Using Phoenix Liveview</title>
-      <link>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</link>
-      <pubDate>Mon, 20 Apr 2020 12:00:00 -0500</pubDate>
-      
-      <guid>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</guid>
-      <description>Server-side rendered HTML using Phoenix LiveView “LiveView” television
-After attending the 2019 Lone Star Elixir conference in Austin, Texas and hearing the release of Phoenix LiveView announced, I decided I wanted to jump on the train of dabbling in LiveView. At the time, a lot of the examples being released were mini games which is what initially inspired me to recreate Minesweeper! After reading this you should understand what LiveView is, know some of the advantages and disadvantages of server side rendered HTML, and have an insight into how I used LiveView to build a clone of Minesweeper.</description>
-    </item>
-    
-    <item>
       <title>London, UK</title>
       <link>https://ivymarkwell.github.io/photography/united-kingdom-six/</link>
       <pubDate>Sat, 09 Nov 2019 14:55:59 -0600</pubDate>
@@ -51,17 +41,6 @@ After attending the 2019 Lone Star Elixir conference in Austin, Texas and hearin
       <guid>https://ivymarkwell.github.io/photography/code-mesh-ldn/</guid>
       <description>Code Mesh London is an amazing alternative tech confernece that focuses on functional programming languages, inspiring people to just code, and encouraging diversity.
                        </description>
-    </item>
-    
-    <item>
-      <title>Creating a Custom User Confirmation Modal With the React Router Prompt</title>
-      <link>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</link>
-      <pubDate>Mon, 16 Sep 2019 15:00:00 -0500</pubDate>
-      
-      <guid>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</guid>
-      <description>Writing a custom UserConfirmation modal with the React Router Prompt A person up in arms about wanting custom modals in their Prompt component
-This is a short walkthrough on how to use React-Router’s v5 Promptcomponent to replace the built in user confirmation window object with your own custom UserConfirmation modal.
-There is another really good article about blocking the navigation to prevent the default modal so that we can render our own custom component instead.</description>
     </item>
     
     <item>
@@ -231,16 +210,12 @@ There is another really good article about blocking the navigation to prevent th
     </item>
     
     <item>
-      <title>Create and Deploying Your First Hugo Site to Github Pages</title>
-      <link>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</link>
+      <title></title>
+      <link>https://ivymarkwell.github.io/posts/</link>
       <pubDate>Sun, 29 Apr 2018 15:00:00 +0000</pubDate>
       
-      <guid>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</guid>
-      <description>Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
-This is a comprehensive guide for creating your first static site using Hugo and hosting it on GitHub pages.
-Creating your site First, make sure you have Hugo installed on your machine.
-Now you can run these commands to make your first site.
-And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!</description>
+      <guid>https://ivymarkwell.github.io/posts/</guid>
+      <description>Posts from Medium 2020 Server Side Rendered HTML Using Phoenix Liveview Apr 20     2019 Creating a Custom User Confirmation Modal With the React Router Prompt Sep 16     2018 Create and Deploying Your First Hugo Site to Github Pages Apr 29       </description>
     </item>
     
     <item>

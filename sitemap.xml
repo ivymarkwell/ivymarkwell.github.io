@@ -3,123 +3,18 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://ivymarkwell.github.io/</loc>
-    <lastmod>2020-05-11T12:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/</loc>
-    <lastmod>2020-05-11T12:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/tootie/</loc>
-    <lastmod>2020-05-11T12:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/united-kingdom-six/</loc>
-    <lastmod>2019-11-09T14:55:59-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/code-mesh-ldn/</loc>
-    <lastmod>2019-11-06T14:12:47-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/mexico-five/</loc>
-    <lastmod>2019-08-02T15:15:04-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/mexico-four/</loc>
-    <lastmod>2019-08-01T15:42:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/mexico-three/</loc>
-    <lastmod>2019-07-31T15:00:45-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/mexico-two/</loc>
-    <lastmod>2019-07-30T14:47:40-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/mexico-one/</loc>
-    <lastmod>2019-07-28T13:35:04-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/pecan-street-festival/</loc>
-    <lastmod>2019-05-04T00:26:33-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/lonestar-elixir/</loc>
-    <lastmod>2019-03-03T20:42:20-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/united-kingdom-five/</loc>
-    <lastmod>2018-09-09T00:14:23-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/united-kingdom-four/</loc>
-    <lastmod>2018-09-08T23:57:45-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/united-kingdom-three/</loc>
-    <lastmod>2018-09-07T23:57:56-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/united-kingdom-two/</loc>
-    <lastmod>2018-09-06T23:20:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/united-kingdom-one/</loc>
-    <lastmod>2018-09-05T21:48:21-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/spain-four/</loc>
-    <lastmod>2018-09-04T00:22:16-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/spain-three/</loc>
-    <lastmod>2018-09-03T23:53:51-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/spain-two/</loc>
-    <lastmod>2018-09-02T22:34:10-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/spain-one/</loc>
-    <lastmod>2018-09-01T23:19:11-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/photography/cinco-de-mayo/</loc>
-    <lastmod>2018-05-06T19:53:31-04:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://ivymarkwell.github.io/posts/</loc>
     <lastmod>2018-04-29T15:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://ivymarkwell.github.io/photography/heidelberg-project/</loc>
-    <lastmod>2018-04-22T13:41:24-04:00</lastmod>
+    <loc>https://ivymarkwell.github.io/</loc>
+    <lastmod>2018-04-29T15:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ivymarkwell.github.io/photography/</loc>
+    <lastmod>2018-04-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>

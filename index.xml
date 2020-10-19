@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ivy Markwell</title>
@@ -6,10 +6,208 @@
     <description>Recent content on Ivy Markwell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 29 Apr 2018 15:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 May 2020 12:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://ivymarkwell.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tootie</title>
+      <link>https://ivymarkwell.github.io/photography/tootie/</link>
+      <pubDate>Mon, 11 May 2020 12:00:00 +0000</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/tootie/</guid>
+      <description>Tootie
+2008 - 2020
+Some pictures of my best friend.
+                       </description>
+    </item>
+    
+    <item>
+      <title>London, UK</title>
+      <link>https://ivymarkwell.github.io/photography/united-kingdom-six/</link>
+      <pubDate>Sat, 09 Nov 2019 14:55:59 -0600</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/united-kingdom-six/</guid>
+      <description>Because we spent so much time at the conference my coworker Kelly and I really only had one day to explore London on our own! We went to a really great vegan fast food resturant, spent most of the day shopping, and ended the night going to a really beautiful Indian resturant in the middle of downtown.
+                       </description>
+    </item>
+    
+    <item>
+      <title>Code Mesh LDN</title>
+      <link>https://ivymarkwell.github.io/photography/code-mesh-ldn/</link>
+      <pubDate>Wed, 06 Nov 2019 14:12:47 -0600</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/code-mesh-ldn/</guid>
+      <description>Code Mesh London is an amazing alternative tech confernece that focuses on functional programming languages, inspiring people to just code, and encouraging diversity.
+                       </description>
+    </item>
+    
+    <item>
+      <title>Guanajuato, Mexico</title>
+      <link>https://ivymarkwell.github.io/photography/mexico-five/</link>
+      <pubDate>Fri, 02 Aug 2019 15:15:04 -0500</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/mexico-five/</guid>
+      <description>These pictures are from our second day in Guanajuato. We walked all over the city, saw the El Pipila statue, and took fun pictures with the street actors.
+                       </description>
+    </item>
+    
+    <item>
+      <title>Guanajuato, Mexico</title>
+      <link>https://ivymarkwell.github.io/photography/mexico-four/</link>
+      <pubDate>Thu, 01 Aug 2019 15:42:00 -0500</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/mexico-four/</guid>
+      <description>We spent about three days in Guanajuato. This was the first night we got to the city. We mostly walked around the main center, got food and settled into our last city.
+             </description>
+    </item>
+    
+    <item>
+      <title>San Miguel de Allende, Mexico</title>
+      <link>https://ivymarkwell.github.io/photography/mexico-three/</link>
+      <pubDate>Wed, 31 Jul 2019 15:00:45 -0500</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/mexico-three/</guid>
+      <description>San Miguel de Allende is known as a town where Americans come to retire. It was definetely the &#34;fancy&#34; part of our trip. We did a lot more tourist attractions in this town, visited shops, went to bars, and saw the really beautiful Parroquia de San Miguel Arcángel, a giant church in the center of San Miguel.
+                               </description>
+    </item>
+    
+    <item>
+      <title>León, Mexico</title>
+      <link>https://ivymarkwell.github.io/photography/mexico-two/</link>
+      <pubDate>Tue, 30 Jul 2019 14:47:40 -0500</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/mexico-two/</guid>
+      <description>Our last day in León was spent looking at wedding dresses for one of my friend&#39;s wedding and traveling to San Miguel!
+                       </description>
+    </item>
+    
+    <item>
+      <title>Cuerámaro, Mexico</title>
+      <link>https://ivymarkwell.github.io/photography/mexico-one/</link>
+      <pubDate>Sun, 28 Jul 2019 13:35:04 -0500</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/mexico-one/</guid>
+      <description>My first couple of days in Mexico were spent with my friends&#39; families in León and Cuerámaro. Our second day was in Cuerámaro, where my friends were born and raised. It&#39;s a small, very cute town south of León. When we weren&#39;t spending time visiting their family we spent time exploring the town, the many shops, and eating amazing food.
+                       </description>
+    </item>
+    
+    <item>
+      <title>Pecan Street Festival</title>
+      <link>https://ivymarkwell.github.io/photography/pecan-street-festival/</link>
+      <pubDate>Sat, 04 May 2019 00:26:33 -0500</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/pecan-street-festival/</guid>
+      <description>My friend Courtney and I went to the semiannual Pecan Street festival held on 6th street in Austin, Texas. The free arts and crafts festival began in the Fall of 1978 and displays local artists, music and food every May and September. Plus, it&#39;s a lot of fun.
+                           </description>
+    </item>
+    
+    <item>
+      <title>Lonestar Elixir</title>
+      <link>https://ivymarkwell.github.io/photography/lonestar-elixir/</link>
+      <pubDate>Sun, 03 Mar 2019 20:42:20 -0600</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/lonestar-elixir/</guid>
+      <description>I got to attend the Lonestar ElixirConf 2019 with my company Rabbet this weekend! I spent my time listening to talks by really amazing people and learned a lot. I also helped run my company&#39;s booth during the breaks and got to meet a lot of great people who wanted to learn about what we do.
+                                                     </description>
+    </item>
+    
+    <item>
+      <title>Cardiff, UK</title>
+      <link>https://ivymarkwell.github.io/photography/united-kingdom-five/</link>
+      <pubDate>Sun, 09 Sep 2018 00:14:23 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/united-kingdom-five/</guid>
+      <description>My last day of my trip was one of the most eventful. I took a free bus to the Brecon National Park an hour north of Cardiff. I ended up getting off at the wrong place with a group of five other people in the middle of the park with no cell service. I was able to eventually catch another bus on the side of the road to the small city I was going to and it was beautiful.</description>
+    </item>
+    
+    <item>
+      <title>Cardiff, UK</title>
+      <link>https://ivymarkwell.github.io/photography/united-kingdom-four/</link>
+      <pubDate>Sat, 08 Sep 2018 23:57:45 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/united-kingdom-four/</guid>
+      <description>I enjoyed Cardiff a lot more than I did Liverpool. One of the best things I did was visiting the Cardiff Castle. I spent the day going to the docks, just like in Liverpool and checking out the local bars. I even met someone in a bar who was from the next city over from me in Michigan!
+                             </description>
+    </item>
+    
+    <item>
+      <title>Liverpool, UK - Cardiff, UK</title>
+      <link>https://ivymarkwell.github.io/photography/united-kingdom-three/</link>
+      <pubDate>Fri, 07 Sep 2018 23:57:56 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/united-kingdom-three/</guid>
+      <description>I took a train from Liverpool to Cardiff. It was so much better than I even thought it could have been.
+             </description>
+    </item>
+    
+    <item>
+      <title>Liverpool, UK</title>
+      <link>https://ivymarkwell.github.io/photography/united-kingdom-two/</link>
+      <pubDate>Thu, 06 Sep 2018 23:20:51 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/united-kingdom-two/</guid>
+      <description>I wasn&#39;t in Liverpool very long. My second day was my only full day there. I spent most of the my day going to museums and exploring. I went to the Merseyside Maritime Museum and saw the docks. Later I went to the world museum, and circled back around to my hotel to see a local graffiti alley then ended the day by going to a cat cafe.
+                                       </description>
+    </item>
+    
+    <item>
+      <title>Liverpool, UK</title>
+      <link>https://ivymarkwell.github.io/photography/united-kingdom-one/</link>
+      <pubDate>Wed, 05 Sep 2018 21:48:21 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/united-kingdom-one/</guid>
+      <description>I arrived to Liverpool, UK in the afternoon and so most of my first day was spent getting my nails done and drinking coffee amongst other things.
+         </description>
+    </item>
+    
+    <item>
+      <title>Barcelona, Spain</title>
+      <link>https://ivymarkwell.github.io/photography/spain-four/</link>
+      <pubDate>Tue, 04 Sep 2018 00:22:16 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/spain-four/</guid>
+      <description>My fourth day in Barcelona was a lot more relaxed. I only went to the beach and to my tattoo appointment for my daisies.
+                     </description>
+    </item>
+    
+    <item>
+      <title>Barcelona, Spain</title>
+      <link>https://ivymarkwell.github.io/photography/spain-three/</link>
+      <pubDate>Mon, 03 Sep 2018 23:53:51 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/spain-three/</guid>
+      <description>This is the day I forgot my camera in my hotel. So unfortunately all the pictures that I took during my air balloon ride were on my iPhone 7. Overall it was really amazing, still scary, but a great experience. I met a really nice Chinese couple who were honeymooning through Spain along with the staff from Ballooning Barcelona. Afterwards, I walked to Park Güell and through the northern part of Barcelona and finished at a really nice sushi resturant called Robata.</description>
+    </item>
+    
+    <item>
+      <title>Barcelona, Spain</title>
+      <link>https://ivymarkwell.github.io/photography/spain-two/</link>
+      <pubDate>Sun, 02 Sep 2018 22:34:10 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/spain-two/</guid>
+      <description>My second day in Spain I mostly spent climbing Monserrat. I took the Aeri de Monserrat cable car early in the morning to the Montserrat Monastery. I spent about an hour to two hours climbing to Sant Jeroni with a girl I met from Quebec, Canada. I went back into Barcelona in the evening to eat and relax and on the way back to my hotel I ran into two little girls playing a game of pretending to sell toys on the street.</description>
+    </item>
+    
+    <item>
+      <title>Barcelona, Spain</title>
+      <link>https://ivymarkwell.github.io/photography/spain-one/</link>
+      <pubDate>Sat, 01 Sep 2018 23:19:11 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/spain-one/</guid>
+      <description>My first day in Barcelona, Spain! I started the morning by going to the La Boqueria, a local market in the center of the city. I walked around and went to the Catalonoia Square where you could feed pigeons and then headed to a reservation I had at Niño Viejo. Afterwards I went to Plaça d&#39;Espanya and Museu Nacional d&#39;Art de Catalunya. On my way back to my hotel to get ready for a local meet up I was attending, I met José and his chickens.</description>
+    </item>
+    
+    <item>
+      <title>Cinco De Mayo</title>
+      <link>https://ivymarkwell.github.io/photography/cinco-de-mayo/</link>
+      <pubDate>Sun, 06 May 2018 19:53:31 -0400</pubDate>
+      
+      <guid>https://ivymarkwell.github.io/photography/cinco-de-mayo/</guid>
+      <description>Cinco de Mayo is the celebration of the victory of the Battle of Puebla on May 5th, 1862. Detroit holds a yearly parade in Mexican Town where they drive down the streets and throw candy for the kids.
+                   </description>
+    </item>
     
     <item>
       <title></title>
@@ -21,13 +219,13 @@
     </item>
     
     <item>
-      <title></title>
-      <link>https://ivymarkwell.github.io/photography/</link>
-      <pubDate>Sun, 22 Apr 2018 00:00:00 +0000</pubDate>
+      <title>Heidelberg Project</title>
+      <link>https://ivymarkwell.github.io/photography/heidelberg-project/</link>
+      <pubDate>Sun, 22 Apr 2018 13:41:24 -0400</pubDate>
       
-      <guid>https://ivymarkwell.github.io/photography/</guid>
-      <description>Photography Most pictures are taken with the Canon EOS Rebel T6i Digital SLR but some pictures I wanted to share are just taken from my iPhone.
- 2020 Tootie May 11     2019 London, UK Nov 9   Code Mesh LDN Nov 6   Guanajuato, Mexico Aug 2   Guanajuato, Mexico Aug 1   San Miguel de Allende, Mexico Jul 31   León, Mexico Jul 30   Cuerámaro, Mexico Jul 28   Pecan Street Festival May 4   Lonestar Elixir Mar 3     2018 Cardiff, UK Sep 9   Cardiff, UK Sep 8   Liverpool, UK - Cardiff, UK Sep 7   Liverpool, UK Sep 6   Liverpool, UK Sep 5   Barcelona, Spain Sep 4   Barcelona, Spain Sep 3   Barcelona, Spain Sep 2   Barcelona, Spain Sep 1   Cinco De Mayo May 6   Heidelberg Project Apr 22       </description>
+      <guid>https://ivymarkwell.github.io/photography/heidelberg-project/</guid>
+      <description>The Heidelberg Project is an artistic protest done by Tyree Guyton after the deterioration of Heidelberg street during the Detroit 1967 riots.
+               </description>
     </item>
     
     <item>

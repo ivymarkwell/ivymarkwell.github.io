@@ -339,7 +339,7 @@ a.button {
 button.outline,
 .button.outline,
 a.button.outline {
-  background: transparent;
+  background: 0 0;
   border-color: #eaeaea;
   box-shadow: none;
   padding: 8px 18px;

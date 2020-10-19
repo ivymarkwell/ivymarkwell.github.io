@@ -1,226 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="author"
-    content="Ivy Markwell ">
-<meta name="description"
-    content="Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="author" content="Ivy Markwell " />
+    <meta
+      name="description"
+      content="Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
 This is a comprehensive guide for creating your first static site using Hugo and hosting it on GitHub pages.
 Creating your site First, make sure you have Hugo installed on your machine.
 Now you can run these commands to make your first site.
-And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!" />
-<meta name="keywords" content="" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/" />
+And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!"
+    />
+    <meta name="keywords" content="" />
+    <meta name="robots" content="noodp" />
+    <link
+      rel="canonical"
+      href="https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/"
+    />
 
+    <title>
+      Create and Deploying Your First Hugo Site to Github Pages :: Ivy Markwell
+    </title>
 
-<title>
-    
-    Create and Deploying Your First Hugo Site to Github Pages :: Ivy Markwell 
-    
-</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
 
+    <link
+      rel="stylesheet"
+      href="/main.min.e0b07763b1eb2f03e58676ebc697857662aa8f0538674a9ee9e1f57819ff3d5c.css"
+    />
 
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
-    type="text/css">
-
-
-
-<link rel="stylesheet" href="/main.min.e0b07763b1eb2f03e58676ebc697857662aa8f0538674a9ee9e1f57819ff3d5c.css">
-
-
-
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
-<link rel="shortcut icon" href="/favicon.ico">
-<meta name="theme-color" content="#252627"><meta itemprop="name" content="Create and Deploying Your First Hugo Site to Github Pages">
-<meta itemprop="description" content="Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta name="theme-color" content="#252627" />
+    <meta
+      itemprop="name"
+      content="Create and Deploying Your First Hugo Site to Github Pages"
+    />
+    <meta
+      itemprop="description"
+      content="Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
 This is a comprehensive guide for creating your first static site using Hugo and hosting it on GitHub pages.
 Creating your site First, make sure you have Hugo installed on your machine.
 Now you can run these commands to make your first site.
-And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!">
+And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!"
+    />
 
+    <meta itemprop="datePublished" content="2018-04-29T15:00:00&#43;00:00" />
+    <meta itemprop="dateModified" content="2018-04-29T15:00:00&#43;00:00" />
+    <meta itemprop="wordCount" content="714" />
 
-<meta itemprop="datePublished" content="2018-04-29T15:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2018-04-29T15:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="714">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Create and Deploying Your First Hugo Site to Github Pages"/>
-<meta name="twitter:description" content="Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
+    <meta itemprop="keywords" content="" />
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="Create and Deploying Your First Hugo Site to Github Pages"
+    />
+    <meta
+      name="twitter:description"
+      content="Creating and deploying your first Hugo site to Github pages A local duck I photographed recently
 This is a comprehensive guide for creating your first static site using Hugo and hosting it on GitHub pages.
 Creating your site First, make sure you have Hugo installed on your machine.
 Now you can run these commands to make your first site.
-And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!"/>
+And there you go! You’ve created your first Hugo site. I mean, there’s nothing in it, but still!"
+    />
 
+    <meta
+      property="article:published_time"
+      content="2018-04-29 15:00:00 &#43;0000 &#43;0000"
+    />
+  </head>
 
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+        <span class="header__inner">
+          <a href="/" style="text-decoration: none">
+            <div class="logo">
+              <span class="logo__arrow">➜&nbsp;</span>
+              <span class="logo__tilde">~&nbsp;</span>
+              <span class="logo__text">cd ivymarkwell/</span>
+              <span class="logo__cursor"></span>
+            </div>
+          </a>
 
+          <span class="header__right">
+            <nav class="menu">
+              <ul class="menu__inner">
+                <li><a href="https://ivymarkwell.github.io/about">About</a></li>
+                <li>
+                  <a href="https://ivymarkwell.github.io/photography"
+                    >Photography</a
+                  >
+                </li>
+                <li><a href="https://ivymarkwell.github.io/posts">Posts</a></li>
+              </ul>
+            </nav>
 
-<meta property="article:published_time" content="2018-04-29 15:00:00 &#43;0000 &#43;0000" />
+            <span class="menu-trigger">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+              </svg>
+            </span>
 
-
-
-
-
-
-
-    </head>
-
-    <body class="dark-theme">
-        <div class="container">
-            <header class="header">
-    <span class="header__inner">
-        <a href="/"
-    style="text-decoration: none;">
-    <div class="logo">
-        
-        <span class="logo__arrow">➜&nbsp;</span>
-        <span class="logo__tilde">~&nbsp;</span>
-        <span class="logo__text">cd ivymarkwell/</span>
-        <span class="logo__cursor"></span>
-        
-    </div>
-</a>
-
-
-        <span class="header__right">
-            
-                <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://ivymarkwell.github.io/about">About</a></li><li><a href="https://ivymarkwell.github.io/photography">Photography</a></li><li><a href="https://ivymarkwell.github.io/posts">Posts</a></li>
-    </ul>
-</nav>
-
-                <span class="menu-trigger">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-                    </svg>
-                </span>
-            
-
-            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+            <span class="theme-toggle unselectable"
+              ><svg
+                class="theme-toggler"
+                width="24"
+                height="24"
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
   3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
-</svg>
-</span>
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+                />
+              </svg>
+            </span>
+          </span>
         </span>
-    </span>
-</header>
+      </header>
 
-
-            <div class="content">
-                
-    <main class="post">
-
-        <div class="post-info">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>4 minutes
-
-            
-
+      <div class="content">
+        <main class="post">
+          <div class="post-info">
+            <p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-clock"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline></svg
+              >4 minutes
             </p>
-        </div>
+          </div>
 
-        <article>
-            <h1 class="post-title"><a href="https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/">Create and Deploying Your First Hugo Site to Github Pages</a></h1>
-
-            
+          <article>
+            <h1 class="post-title">
+              <a
+                href="https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/"
+                >Create and Deploying Your First Hugo Site to Github Pages</a
+              >
+            </h1>
 
             <div class="post-content">
-                
+              <h3
+                id="creating-and-deploying-your-first-hugo-site-to-github-pages"
+              >
+                Creating and deploying your first Hugo site to Github pages
+              </h3>
 
-<h3 id="creating-and-deploying-your-first-hugo-site-to-github-pages">Creating and deploying your first Hugo site to Github pages</h3>
+              <p>
+                <img
+                  src="https://cdn-images-1.medium.com/max/2400/1*BDKgDXTBKX3z7x6ij5Z7xQ.jpeg"
+                  alt=""
+                />
+                <span class="figcaption_hack"
+                  >A local duck I photographed recently</span
+                >
+              </p>
 
-<p><img src="https://cdn-images-1.medium.com/max/2400/1*BDKgDXTBKX3z7x6ij5Z7xQ.jpeg" alt="" />
-<span class="figcaption_hack">A local duck I photographed recently</span></p>
+              <p>
+                This is a comprehensive guide for creating your first static
+                site using Hugo and hosting it on GitHub pages.
+              </p>
 
-<p>This is a comprehensive guide for creating your first static site using Hugo and
-hosting it on GitHub pages.</p>
+              <h3 id="creating-your-site">
+                <strong>Creating your site</strong>
+              </h3>
 
-<h3 id="creating-your-site"><strong>Creating your site</strong></h3>
+              <p>
+                First, make sure you have
+                <a href="https://gohugo.io/getting-started/installing/">Hugo</a>
+                installed on your machine.
+              </p>
 
-<p>First, make sure you have <a href="https://gohugo.io/getting-started/installing/">Hugo</a>
-installed on your machine.</p>
+              <p>Now you can run these commands to make your first site.</p>
 
-<p>Now you can run these commands to make your first site.</p>
+              <p>
+                And there you go! You’ve created your first Hugo site. I mean,
+                there’s nothing in it, but still! Let’s take a look.
+              </p>
 
-<p>And there you go! You’ve created your first Hugo site. I mean, there’s nothing
-in it, but still! Let’s take a look.</p>
-
-<pre><code>hugo server -D
+              <pre><code>hugo server -D
 </code></pre>
 
-<p>Your web server by default should be hosted at
-<a href="http://localhost:1313/">http://localhost:1313/.</a></p>
+              <p>
+                Your web server by default should be hosted at
+                <a href="http://localhost:1313/">http://localhost:1313/.</a>
+              </p>
 
-<p>There should be nothing here. We have to add themes, content, and lots of other
-fun stuff.</p>
+              <p>
+                There should be nothing here. We have to add themes, content,
+                and lots of other fun stuff.
+              </p>
 
-<p>If you navigate to <a href="https://themes.gohugo.io/">Hugo,</a> you can see a complete
-list of themes that you can use to style your site. In my own personal Hugo site
-I, use <a href="https://themes.gohugo.io/minimal/">Minimal</a>, so let’s start there. First
-we need to initialize our Github repo, add the theme as a submodule in
-<code>themes/minimal</code> and copy the default config file for that theme.</p>
+              <p>
+                If you navigate to
+                <a href="https://themes.gohugo.io/">Hugo,</a> you can see a
+                complete list of themes that you can use to style your site. In
+                my own personal Hugo site I, use
+                <a href="https://themes.gohugo.io/minimal/">Minimal</a>, so
+                let’s start there. First we need to initialize our Github repo,
+                add the theme as a submodule in <code>themes/minimal</code> and
+                copy the default config file for that theme.
+              </p>
 
-<pre><code>git init
+              <pre><code>git init
 </code></pre>
 
-<p>Now when you host your server, you should notice that you have the exact <a href="https://themes.gohugo.io/theme/minimal/">demo
-page</a> shown on the theme’s page.</p>
+              <p>
+                Now when you host your server, you should notice that you have
+                the exact
+                <a href="https://themes.gohugo.io/theme/minimal/">demo page</a>
+                shown on the theme’s page.
+              </p>
 
-<p><img src="https://cdn-images-1.medium.com/max/1600/1*fsJe92qbKtKv_BmrjvV_8Q.png" alt="" />
-<span class="figcaption_hack">Hugo’s Demo Page</span></p>
+              <p>
+                <img
+                  src="https://cdn-images-1.medium.com/max/1600/1*fsJe92qbKtKv_BmrjvV_8Q.png"
+                  alt=""
+                />
+                <span class="figcaption_hack">Hugo’s Demo Page</span>
+              </p>
 
-<p>Once that is set up, you should be able to customize it! If you navigate back to
-our Minimal theme’s documentation page you should find a small guide on using
-the parameters to customize the aesthetics of your site.</p>
+              <p>
+                Once that is set up, you should be able to customize it! If you
+                navigate back to our Minimal theme’s documentation page you
+                should find a small guide on using the parameters to customize
+                the aesthetics of your site.
+              </p>
 
-<p>Once you’re done making your site *beautiful, *you can navigate back to Hugo’s
-<a href="https://gohugo.io/getting-started/quick-start/">Getting Started page</a> and
-generate actual content for your site. Generating content on your Hugo site is
-super important because Hugo won’t generate your subpages unless there is
-content to display (or if your content is in <code>draft: true</code>).</p>
+              <p>
+                Once you’re done making your site *beautiful, *you can navigate
+                back to Hugo’s
+                <a href="https://gohugo.io/getting-started/quick-start/"
+                  >Getting Started page</a
+                >
+                and generate actual content for your site. Generating content on
+                your Hugo site is super important because Hugo won’t generate
+                your subpages unless there is content to display (or if your
+                content is in <code>draft: true</code>).
+              </p>
 
-<h3 id="deploying"><strong>Deploying</strong></h3>
+              <h3 id="deploying"><strong>Deploying</strong></h3>
 
-<p>This is where things get tricky.</p>
+              <p>This is where things get tricky.</p>
 
-<p>Github pages doesn’t natively support Hugo like it does Jekyll (another SSG) so
-we’re going to have to create two Github repositories; one to hold your Hugo
-site and files, and one to hold the HTML files we have to generate for your
-actual Github page to read and render. Once you’ve created your remote repos on
-Github <code>&lt;username&gt;.github.io</code> and <code>hugo_site</code> we need to connect them to the
-site we just made.</p>
+              <p>
+                Github pages doesn’t natively support Hugo like it does Jekyll
+                (another SSG) so we’re going to have to create two Github
+                repositories; one to hold your Hugo site and files, and one to
+                hold the HTML files we have to generate for your actual Github
+                page to read and render. Once you’ve created your remote repos
+                on Github <code>&lt;username&gt;.github.io</code> and
+                <code>hugo_site</code> we need to connect them to the site we
+                just made.
+              </p>
 
-<p>First, let’s sync our repo and our code base and add
-<code>&lt;github_username.github.io&gt;</code> as a submodule to our existing repo just like our
-theme.</p>
+              <p>
+                First, let’s sync our repo and our code base and add
+                <code>&lt;github_username.github.io&gt;</code> as a submodule to
+                our existing repo just like our theme.
+              </p>
 
-<pre><code>git remote add origin
+              <pre><code>git remote add origin
 :&lt;github_username&gt;/hugo_site.git
 git add .
 git commit -m &quot;Initial commit for our Hugo site.&quot;
 </code></pre>
 
-<p>Remember, this only pushes to <code>hugo_site</code> . We still need to generate our html
-pages for our <code>&lt;github_username&gt;</code> repo. Hugo already has a built in command,
-<code>Hugo</code>, that generates your files to a <code>Public</code> folder. We need to change our
-<code>config.toml</code> file to output our HTML files to our submodule
-<code>&lt;github_username&gt;.github.io</code>.</p>
+              <p>
+                Remember, this only pushes to <code>hugo_site</code> . We still
+                need to generate our html pages for our
+                <code>&lt;github_username&gt;</code> repo. Hugo already has a
+                built in command, <code>Hugo</code>, that generates your files
+                to a <code>Public</code> folder. We need to change our
+                <code>config.toml</code> file to output our HTML files to our
+                submodule <code>&lt;github_username&gt;.github.io</code>.
+              </p>
 
-<p>Open your <code>config.toml</code>:</p>
+              <p>Open your <code>config.toml</code>:</p>
 
-<pre><code>baseURL = &quot;
+              <pre><code>baseURL = &quot;
 &quot;
 languageCode = &quot;en-us&quot;
 title = &quot;Minimal&quot;
@@ -230,24 +315,33 @@ googleAnalytics = &quot;&quot;
 publishDir = &quot;&lt;github_username&gt;.github.io&quot;
 </code></pre>
 
-<p>The default <code>config.toml</code> for the Minimal theme should look a little like this.
-However, here we added in <code>publishDir</code>. This tells Hugo where to create our HTML
-files from the content in our Hugo site.</p>
+              <p>
+                The default <code>config.toml</code> for the Minimal theme
+                should look a little like this. However, here we added in
+                <code>publishDir</code>. This tells Hugo where to create our
+                HTML files from the content in our Hugo site.
+              </p>
 
-<p>Let’s generate them by running the following command:</p>
+              <p>Let’s generate them by running the following command:</p>
 
-<pre><code>hugo
+              <pre><code>hugo
 </code></pre>
 
-<p>And that should be it. Hugo already comes built with a simple command to
-generate the HTML from any of the customizable content in your site. If you look
-in your <code>&lt;github_username&gt;.github.io</code> folder now you should see HTML and CSS
-files, stuff that Github pages understands!</p>
+              <p>
+                And that should be it. Hugo already comes built with a simple
+                command to generate the HTML from any of the customizable
+                content in your site. If you look in your
+                <code>&lt;github_username&gt;.github.io</code> folder now you
+                should see HTML and CSS files, stuff that Github pages
+                understands!
+              </p>
 
-<p>Before we finally deploy, we need to make sure our remotes our set up correctly
-one last time.</p>
+              <p>
+                Before we finally deploy, we need to make sure our remotes our
+                set up correctly one last time.
+              </p>
 
-<pre><code>cd &lt;github_username&gt;.github.io
+              <pre><code>cd &lt;github_username&gt;.github.io
 git remote -v
 &gt; origin
 :&lt;github_username&gt;/&lt;github_username&gt;.github.io.git (fetch)
@@ -255,92 +349,131 @@ git remote -v
 :&lt;github_username&gt;/&lt;github_username&gt;.github.io.git (push)
 </code></pre>
 
-<p>Now let’s host it!</p>
+              <p>Now let’s host it!</p>
 
-<pre><code>git add .
+              <pre><code>git add .
 git commit -m &quot;Oh my goodness, I'm hosting my first Hugo website!&quot;
 git push origin master
 </code></pre>
 
-<p>Go to your Github page <code>&lt;github_username&gt;.github.io</code>. You should see your very
-own custom Hugo site!</p>
+              <p>
+                Go to your Github page
+                <code>&lt;github_username&gt;.github.io</code>. You should see
+                your very own custom Hugo site!
+              </p>
 
-<hr />
+              <hr />
 
-<p>If you have any trouble please leave a comment below! You can follow me on
-<a href="https://medium.com/@ivymarkwell">Medium</a> and
-<a href="https://github.com/ivymarkwell">Github</a> to see more fun stuff I’m working on.
-I’m also a moderator of a programming <a href="https://www.twitch.tv/floatingdev">Twitch
-channel</a> you can check out to see how small
-open source packages are made!</p>
+              <p>
+                If you have any trouble please leave a comment below! You can
+                follow me on
+                <a href="https://medium.com/@ivymarkwell">Medium</a> and
+                <a href="https://github.com/ivymarkwell">Github</a> to see more
+                fun stuff I’m working on. I’m also a moderator of a programming
+                <a href="https://www.twitch.tv/floatingdev">Twitch channel</a>
+                you can check out to see how small open source packages are
+                made!
+              </p>
 
-<p>If you want to see what else our engineering team is working on, come <a href="https://www.getambassador.com/culture-outcare?ref=careers">join
-us</a> at Ambassador!</p>
-
+              <p>
+                If you want to see what else our engineering team is working on,
+                come
+                <a
+                  href="https://www.getambassador.com/culture-outcare?ref=careers"
+                  >join us</a
+                >
+                at Ambassador!
+              </p>
             </div>
-        </article>
+          </article>
 
-        <hr />
+          <hr />
 
-        <div class="post-info">
+          <div class="post-info">
+            <p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-file-text"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                ></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline></svg
+              >714 Words
+            </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>714 Words</p>
+            <p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-calendar"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line></svg
+              >2018-04-29 10:00 -0500
+            </p>
+          </div>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2018-04-29 10:00 -0500</p>
+          <div class="pagination">
+            <div class="pagination__title">
+              <span class="pagination__title-h"></span>
+              <hr />
+            </div>
+
+            <div class="pagination__buttons">
+              <span class="button previous">
+                <a
+                  href="https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/"
+                >
+                  <span class="button__icon">←</span>
+                  <span class="button__text"
+                    >Creating a Custom User Confirmation Modal With the React
+                    Router Prompt</span
+                  >
+                </a>
+              </span>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <footer class="footer">
+        <div class="footer__inner">
+          <div class="footer__content">
+            <span> Powered by <a href="http://gohugo.io">Hugo</a> </span>
+            <span>
+              Made with &#10084; by
+              <a href="https://github.com/rhazdon">rhazdon</a>
+            </span>
+          </div>
         </div>
-
-        
-            <div class="pagination">
-                <div class="pagination__title">
-                    <span class="pagination__title-h"></span>
-                    <hr />
-                </div>
-
-                <div class="pagination__buttons">
-                    
-                        <span class="button previous">
-                            <a href="https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/">
-                                <span class="button__icon">←</span>
-                                <span class="button__text">Creating a Custom User Confirmation Modal With the React Router Prompt</span>
-                            </a>
-                        </span>
-                    
-
-                    
-                </div>
-            </div>
-        
-
-        
-    </main>
-
-            </div>
-
-            
-                <footer class="footer">
-  <div class="footer__inner">
-    <div class="footer__content">
-      <span>
-        Powered by <a href="http://gohugo.io">Hugo</a>
-      </span>
-      <span>
-        Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a>
-      </span>
+      </footer>
     </div>
-  </div>
-</footer>
 
-            
-        </div>
-
-        
-
-
-
-
-<script type="text/javascript" src="/bundle.min.4c3fb12a087ceed4a52cb5d57068a9795c7069617a01ca70f788052ad66e1791779e6c72686e1dc0ca13dc03b0203204b6566bb0dd1ee80de2b7ff4d8fe53db2.js" integrity="sha512-TD&#43;xKgh87tSlLLXVcGipeVxwaWF6Acpw94gFKtZuF5F3nmxyaG4dwMoT3AOwIDIEtlZrsN0e6A3it/9Nj&#43;U9sg=="></script>
-
-
-
-    </body>
+    <script
+      type="text/javascript"
+      src="/bundle.min.4c3fb12a087ceed4a52cb5d57068a9795c7069617a01ca70f788052ad66e1791779e6c72686e1dc0ca13dc03b0203204b6566bb0dd1ee80de2b7ff4d8fe53db2.js"
+      integrity="sha512-TD&#43;xKgh87tSlLLXVcGipeVxwaWF6Acpw94gFKtZuF5F3nmxyaG4dwMoT3AOwIDIEtlZrsN0e6A3it/9Nj&#43;U9sg=="
+    ></script>
+  </body>
 </html>

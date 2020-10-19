@@ -1,4 +1,5 @@
-﻿::-webkit-scrollbar {
+﻿/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+::-webkit-scrollbar {
   width: 8px;
   height: 8px;
   background: #212020;
@@ -161,9 +162,9 @@ template {
 code[class*="language-"],
 pre[class*="language-"] {
   color: #ccc;
-  background: 0 0;
-  font-family: Consolas, Monaco, andale mono, ubuntu mono, monospace;
-  font-display: auto;
+  background: none;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-size: 1em;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
@@ -243,7 +244,7 @@ pre[class*="language-"] {
 }
 .token.important,
 .token.bold {
-  font-weight: 700;
+  font-weight: bold;
 }
 .token.italic {
   font-style: italic;
@@ -259,52 +260,52 @@ pre[class*="language-"] {
   --tabletWidth: (max-width: 900px);
 }
 @font-face {
-  font-family: inter ui;
+  font-family: "Inter UI";
   font-style: normal;
   font-display: auto;
   font-weight: 400;
-  src: url(../fonts/Inter-UI-Regular.woff2) format("woff2"),
-    url(../fonts/Inter-UI-Regular.woff) format("woff");
+  src: url("../fonts/Inter-UI-Regular.woff2") format("woff2"),
+    url("../fonts/Inter-UI-Regular.woff") format("woff");
 }
 @font-face {
-  font-family: inter ui;
+  font-family: "Inter UI";
   font-style: italic;
   font-display: auto;
   font-weight: 400;
-  src: url(../fonts/Inter-UI-Italic.woff2) format("woff2"),
-    url(../fonts/Inter-UI-Italic.woff) format("woff");
+  src: url("../fonts/Inter-UI-Italic.woff2") format("woff2"),
+    url("../fonts/Inter-UI-Italic.woff") format("woff");
 }
 @font-face {
-  font-family: inter ui;
+  font-family: "Inter UI";
   font-style: normal;
   font-display: auto;
   font-weight: 600;
-  src: url(../fonts/Inter-UI-Medium.woff2) format("woff2"),
-    url(../fonts/Inter-UI-Medium.woff) format("woff");
+  src: url("../fonts/Inter-UI-Medium.woff2") format("woff2"),
+    url("../fonts/Inter-UI-Medium.woff") format("woff");
 }
 @font-face {
-  font-family: inter ui;
+  font-family: "Inter UI";
   font-style: italic;
   font-display: auto;
   font-weight: 600;
-  src: url(../fonts/Inter-UI-MediumItalic.woff2) format("woff2"),
-    url(../fonts/Inter-UI-MediumItalic.woff) format("woff");
+  src: url("../fonts/Inter-UI-MediumItalic.woff2") format("woff2"),
+    url("../fonts/Inter-UI-MediumItalic.woff") format("woff");
 }
 @font-face {
-  font-family: inter ui;
+  font-family: "Inter UI";
   font-style: normal;
   font-display: auto;
   font-weight: 800;
-  src: url(../fonts/Inter-UI-Bold.woff2) format("woff2"),
-    url(../fonts/Inter-UI-Bold.woff) format("woff");
+  src: url("../fonts/Inter-UI-Bold.woff2") format("woff2"),
+    url("../fonts/Inter-UI-Bold.woff") format("woff");
 }
 @font-face {
-  font-family: inter ui;
+  font-family: "Inter UI";
   font-style: italic;
   font-display: auto;
   font-weight: 800;
-  src: url(../fonts/Inter-UI-BoldItalic.woff2) format("woff2"),
-    url(../fonts/Inter-UI-BoldItalic.woff) format("woff");
+  src: url("../fonts/Inter-UI-BoldItalic.woff2") format("woff2"),
+    url("../fonts/Inter-UI-BoldItalic.woff") format("woff");
 }
 .button-container {
   display: table;
@@ -369,7 +370,7 @@ a.button.primary:hover {
 button.link,
 .button.link,
 a.button.link {
-  background: 0 0;
+  background: none;
   font-size: 1rem;
 }
 button.small,
@@ -457,7 +458,7 @@ a.button.wide {
   display: flex;
   align-items: center;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: bold;
   font-display: auto;
   font-family: monospace, monospace;
 }
@@ -466,12 +467,6 @@ a.button.wide {
 }
 .logo__mark {
   margin-right: 5px;
-}
-.logo__arrow {
-  color: #5f3;
-}
-.logo__tilde {
-  color: #6ff;
 }
 .logo__text {
   font-size: 1.125rem;
@@ -550,6 +545,12 @@ a.button.wide {
   fill: currentColor;
   margin-left: 10px;
   cursor: pointer;
+  display: none;
+}
+@media (max-width: 684px) {
+  .menu-trigger {
+    display: block;
+  }
 }
 .menu a {
   display: inline-block;
@@ -576,8 +577,8 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: inter ui, -apple-system, BlinkMacSystemFont, roboto, segoe ui,
-    Helvetica, Arial, sans-serif;
+  font-family: "Inter UI", -apple-system, BlinkMacSystemFont, "Roboto",
+    "Segoe UI", Helvetica, Arial, sans-serif;
   font-display: auto;
   font-size: 1rem;
   line-height: 1.54;
@@ -653,6 +654,11 @@ img.center {
 img.right {
   margin-left: auto;
 }
+img.circle {
+  border-radius: 50%;
+  max-width: 25%;
+  margin: auto;
+}
 figure {
   display: table;
   max-width: 100%;
@@ -661,12 +667,29 @@ figure {
 figure.left {
   margin-right: auto;
 }
+figure.left-floated {
+  margin-right: auto;
+  float: left;
+}
+figure.left-floated img {
+  margin: 20px 20px 20px 0;
+}
 figure.center {
   margin-left: auto;
   margin-right: auto;
 }
 figure.right {
   margin-left: auto;
+}
+figure.right-floated {
+  margin-left: auto;
+  float: right;
+}
+figure.right-floated img {
+  margin: 20px 0 20px 20px;
+}
+figure.rounded img {
+  border-radius: 50%;
 }
 figure figcaption {
   font-size: 14px;
@@ -697,7 +720,7 @@ code {
 }
 pre {
   background: #212020;
-  padding: 20px;
+  padding: 10px 10px 10px 20px;
   border-radius: 8px;
   font-size: 0.95rem;
   overflow: auto;
@@ -709,7 +732,7 @@ pre {
   }
 }
 pre code {
-  background: 0 0 !important;
+  background: none !important;
   color: #ccc;
   margin: 0;
   padding: 0;
@@ -759,7 +782,7 @@ ol ol {
   list-style-type: lower-alpha;
 }
 .container {
-  flex: 1;
+  flex: 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -771,7 +794,7 @@ ol ol {
   flex: 1 auto;
   align-items: center;
   justify-content: center;
-  margin: 50px 0;
+  margin: 0;
 }
 @media (max-width: 684px) {
   .content {
@@ -822,14 +845,14 @@ hr {
   display: block;
   font-size: 14px;
   font-size: 0.875rem;
-  font-weight: 700;
+  font-weight: bold;
   height: auto;
+  width: auto;
+  top: 5px;
   left: 5px;
   line-height: normal;
   padding: 15px 23px 14px;
   text-decoration: none;
-  top: 5px;
-  width: auto;
   z-index: 100000;
 }
 .posts {
@@ -868,7 +891,7 @@ hr {
 }
 .posts .post-title {
   font-size: 1rem;
-  margin: 5px 0;
+  margin: 5px 0 5px 0;
 }
 .posts .post-year {
   padding-top: 6px;
@@ -957,7 +980,7 @@ hr {
   margin: 0.8em 0;
 }
 .post-info a:hover {
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid white;
 }
 .post-info svg {
   margin-right: 0.8em;
@@ -985,7 +1008,7 @@ hr {
   display: flex;
   text-align: center;
   position: relative;
-  margin: 30px 0 20px;
+  margin: 20px 0;
 }
 .pagination__title-h {
   text-align: center;
@@ -1018,7 +1041,7 @@ hr {
 }
 .pagination__buttons a {
   text-decoration: none;
-  font-weight: 700;
+  font-weight: bold;
 }
 .button {
   position: relative;
@@ -1090,15 +1113,52 @@ hr {
     margin-top: 10px;
   }
 }
-.footer__content > *:not(:last-child) {
-  border-right: 1px solid;
-  padding: 0 15px;
+.footer__content > *:not(:last-child)::after {
+  content: "•";
+  padding: 0 5px;
 }
 @media (max-width: 900px) {
-  .footer__content > *:not(:last-child) {
-    border: none;
+  .footer__content > *:not(:last-child)::after {
+    content: "";
+    padding: 0;
   }
 }
 .footer__content > *:last-child {
-  padding: 0 15px;
+  padding: 0 5px;
 }
+@media (max-width: 900px) {
+  .footer__content > *:last-child {
+    padding: 0;
+  }
+}
+.sharing-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.sharing-buttons .resp-sharing-button__icon,
+.sharing-buttons .resp-sharing-button__link {
+  display: inline-block;
+}
+.sharing-buttons .resp-sharing-button__link {
+  text-decoration: none;
+  margin: 0.5em;
+}
+.sharing-buttons .resp-sharing-button {
+  border-radius: 5px;
+  transition: 25ms ease-out;
+  padding: 0.5em 0.75em;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+.sharing-buttons .resp-sharing-button__icon svg {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: top;
+}
+.sharing-buttons .resp-sharing-button--small svg {
+  margin: 0;
+  vertical-align: middle;
+}
+
+/*# sourceMappingURL=main.css.map */

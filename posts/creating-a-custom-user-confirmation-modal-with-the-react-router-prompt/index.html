@@ -1,267 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="author" content="Ivy Markwell " />
-    <meta
-      name="description"
-      content="Writing a custom UserConfirmation modal with the React Router Prompt A person up in arms about wanting custom modals in their Prompt component
-This is a short walkthrough on how to use React-Router’s v5 Promptcomponent to replace the built in user confirmation window object with your own custom UserConfirmation modal.
-There is another really good article about blocking the navigation to prevent the default modal so that we can render our own custom component instead."
-    />
-    <meta name="keywords" content="" />
-    <meta name="robots" content="noodp" />
-    <link
-      rel="canonical"
-      href="https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/"
-    />
+<html lang="en-us">
 
+<head>
     <title>
-      Creating a Custom User Confirmation Modal With the React Router Prompt ::
-      Ivy Markwell
-    </title>
+Creating a Custom User Confirmation Modal With the React Router Prompt | Ivy Markwell
+</title>
 
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
 
-    <link
-      rel="stylesheet"
-      href="/main.min.e0b07763b1eb2f03e58676ebc697857662aa8f0538674a9ee9e1f57819ff3d5c.css"
-    />
+<meta name="generator" content="Hugo 0.145.0">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <meta name="theme-color" content="#252627" />
-    <meta
-      itemprop="name"
-      content="Creating a Custom User Confirmation Modal With the React Router Prompt"
-    />
-    <meta
-      itemprop="description"
-      content="Writing a custom UserConfirmation modal with the React Router Prompt A person up in arms about wanting custom modals in their Prompt component
-This is a short walkthrough on how to use React-Router’s v5 Promptcomponent to replace the built in user confirmation window object with your own custom UserConfirmation modal.
-There is another really good article about blocking the navigation to prevent the default modal so that we can render our own custom component instead."
-    />
 
-    <meta itemprop="datePublished" content="2019-09-16T15:00:00-05:00" />
-    <meta itemprop="dateModified" content="2019-09-16T15:00:00-05:00" />
-    <meta itemprop="wordCount" content="863" />
+<link rel="canonical" href="https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/" >
 
-    <meta itemprop="keywords" content="" />
-    <meta name="twitter:card" content="summary" />
-    <meta
-      name="twitter:title"
-      content="Creating a Custom User Confirmation Modal With the React Router Prompt"
-    />
-    <meta
-      name="twitter:description"
-      content="Writing a custom UserConfirmation modal with the React Router Prompt A person up in arms about wanting custom modals in their Prompt component
-This is a short walkthrough on how to use React-Router’s v5 Promptcomponent to replace the built in user confirmation window object with your own custom UserConfirmation modal.
-There is another really good article about blocking the navigation to prevent the default modal so that we can render our own custom component instead."
-    />
 
-    <meta
-      property="article:published_time"
-      content="2019-09-16 15:00:00 -0500 CDT"
-    />
-  </head>
 
-  <body class="dark-theme">
-    <div class="container">
-      <header class="header">
-        <span class="header__inner">
-          <a href="/" style="text-decoration: none">
-            <div class="logo">
-              <span class="logo__arrow">➜&nbsp;</span>
-              <span class="logo__tilde">~&nbsp;</span>
-              <span class="logo__text">cd ivymarkwell/</span>
-              <span class="logo__cursor"></span>
-            </div>
-          </a>
 
-          <span class="header__right">
-            <nav class="menu">
-              <ul class="menu__inner">
-                <li><a href="https://ivymarkwell.github.io/about">About</a></li>
+<link href="/css/style.min.5c1fa9bba2d0e854fe30b3d6316ab0114a2a5f25c9a98275badeadb66f2ec725.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="/">
+                <span>me@ivymarkwell.com ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
                 <li>
-                  <a href="https://ivymarkwell.github.io/photography"
-                    >Photography</a
-                  >
+                    <a href="https://ivymarkwell.github.io/about" title="" >
+                        ~/about</a>
                 </li>
-                <li><a href="https://ivymarkwell.github.io/posts">Posts</a></li>
-              </ul>
-            </nav>
+                
+                <li>
+                    <a href="https://ivymarkwell.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
 
-            <span class="menu-trigger">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-              </svg>
-            </span>
 
-            <span class="theme-toggle unselectable"
-              ><svg
-                class="theme-toggler"
-                width="24"
-                height="24"
-                viewBox="0 0 48 48"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
-                />
-              </svg>
-            </span>
-          </span>
-        </span>
-      </header>
-
-      <div class="content">
-        <main class="post">
-          <div class="post-info">
-            <p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-clock"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline></svg
-              >5 minutes
-            </p>
-          </div>
-
-          <article>
-            <h1 class="post-title">
-              <a
-                href="https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/"
-                >Creating a Custom User Confirmation Modal With the React Router
-                Prompt</a
-              >
-            </h1>
-
-            <div class="post-content">
-              <h3
-                id="writing-a-custom-userconfirmation-modal-with-the-react-router-prompt"
-              >
-                Writing a custom UserConfirmation modal with the React Router
-                Prompt
-              </h3>
-
-              <p>
-                <img
-                  src="https://cdn-images-1.medium.com/max/2400/1*lYSWM1q3d5jGuZxGDK6iwQ.jpeg"
-                  alt=""
-                />
-                <span class="figcaption_hack"
-                  >A person up in arms about wanting custom modals in their
-                  Prompt component</span
-                >
-              </p>
-
-              <p>
-                This is a short walkthrough on how to use React-Router’s v5
-                <code>Prompt</code>component to replace the built in user
-                confirmation window object with your own custom
-                <code>UserConfirmation</code> modal.
-              </p>
-
-              <p>
-                There is another really
-                <a
-                  href="https://medium.com/@michaelchan_13570/using-react-router-v4-prompt-with-custom-modal-component-ca839f5faf39"
-                  >good article</a
-                >
-                about blocking the navigation to prevent the default modal so
-                that we can render our own custom component instead. They
-                briefly mention an alternative method that involves utilizing
-                <code>BrowserRouter</code> and the
-                <code>getUserConfirmation</code> prop, which is exactly the
-                solution this post covers!
-              </p>
-
-              <h3 id="briefly-behind-the-scenes">Briefly Behind the Scenes</h3>
-
-              <p>
-                Without going into too much detail, essentially you can trace
-                the <code>Prompt</code> component all the way through
-                <code>RouterContext</code>, <code>Router</code> and
-                <code>BrowserRouter</code>.
-              </p>
-
-              <p>
-                <code>BrowserRouter</code> is where the magic begins.
-                Specifically where the history prop is created on
-                <a
-                  href="https://github.com/ReactTraining/react-router/blob/v5.0.0/packages/react-router-dom/modules/BrowserRouter.js"
-                  >line 11</a
-                >. <code>react-router</code> uses
-                <code>createBrowserHistory</code> to create our rendered history
-                prop as an extension of the <code>window.history</code> that’s
-                available in any browser. If you look in
-                <code>createBrowserHistory</code>, you’ll also see the final
-                layer of our confirmation window which comes from the
-                initialization of <code>getUserConfirmation</code> from
-                <code>getConfirmation</code> defined in <code>DomUtils</code>.
-                This is where the default modal gets defined as a window object.
-              </p>
-
-              <pre><code>export function getConfirmation(message, callback) {
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Creating a Custom User Confirmation Modal With the React Router Prompt</h1>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2019-09-16">September 16, 2019</time></dd>
+            
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p><img src="https://cdn-images-1.medium.com/max/2400/1*lYSWM1q3d5jGuZxGDK6iwQ.jpeg" alt="">
+<span class="figcaption_hack">A person up in arms about wanting custom modals in their Prompt component</span></p>
+<p>This is a short walkthrough on how to use React-Router’s v5 <code>Prompt </code>component
+to replace the built in user confirmation window object with your own custom
+<code>UserConfirmation</code> modal.</p>
+<p>There is another really <a href="https://medium.com/@michaelchan_13570/using-react-router-v4-prompt-with-custom-modal-component-ca839f5faf39">good
+article</a>
+about blocking the navigation to prevent the default modal so that we can render
+our own custom component instead. They briefly mention an alternative method
+that involves utilizing <code>BrowserRouter</code> and the <code>getUserConfirmation</code> prop,
+which is exactly the solution this post covers!</p>
+<h3 id="briefly-behind-the-scenes">Briefly Behind the Scenes</h3>
+<p>Without going into too much detail, essentially you can trace the <code>Prompt</code>
+component all the way through <code>RouterContext</code>, <code>Router</code> and <code>BrowserRouter</code>.</p>
+<p><code>BrowserRouter</code> is where the magic begins. Specifically where the history prop
+is created on <a href="https://github.com/ReactTraining/react-router/blob/v5.0.0/packages/react-router-dom/modules/BrowserRouter.js">line
+11</a>.
+<code>react-router</code> uses <code>createBrowserHistory</code> to create our rendered history prop
+as an extension of the <code>window.history</code> that’s available in any browser. If you
+look in <code>createBrowserHistory</code>, you’ll also see the final layer of our
+confirmation window which comes from the initialization of <code>getUserConfirmation</code>
+from <code>getConfirmation</code> defined in <code>DomUtils</code>. This is where the default modal
+gets defined as a window object.</p>
+<pre><code>export function getConfirmation(message, callback) {
    callback(window.confirm(message));
 }
 </code></pre>
-
-              <h3 id="creating-our-custom-userconfirmation-modal">
-                Creating our Custom UserConfirmation modal
-              </h3>
-
-              <p>
-                Since we are opting out of the window object and replacing it
-                with our own custom component, we not only need to render a
-                nicer modal but we also need to include all of the functionality
-                for canceling and confirming the callback.
-              </p>
-
-              <p>
-                Remember that <code>getUserConfirmation</code> is initialized in
-                <code>BrowserRouter</code> and is what determines what our
-                confirmation modal displays. So wherever you’re initializing
-                your application with <code>BrowserRouter</code> is where we’re
-                going to pass our custom component into the
-                <code>getUserConfirmation</code> prop.
-              </p>
-
-              <p>
-                And you’re ready to go! You’re now overwriting the default
-                window component and rendering your own custom
-                <code>UserConfirmation</code> (even if it might not exist yet).
-              </p>
-
-              <p>So let’s make it happen!</p>
-
-              <pre><code>import React from &quot;react&quot;;
+<h3 id="creating-our-custom-userconfirmation-modal">Creating our Custom UserConfirmation modal</h3>
+<p>Since we are opting out of the window object and replacing it with our own
+custom component, we not only need to render a nicer modal but we also need to
+include all of the functionality for canceling and confirming the callback.</p>
+<p>Remember that <code>getUserConfirmation</code> is initialized in <code>BrowserRouter</code> and is
+what determines what our confirmation modal displays. So wherever you’re
+initializing your application with <code>BrowserRouter</code> is where we’re going to pass
+our custom component into the <code>getUserConfirmation</code> prop.</p>
+<p>And you’re ready to go! You’re now overwriting the default window component and
+rendering your own custom <code>UserConfirmation</code> (even if it might not exist yet).</p>
+<p>So let’s make it happen!</p>
+<pre><code>import React from &quot;react&quot;;
 import ReactDOM from &quot;react-dom&quot;;
 import { Dialog } from &quot;evergreen-ui&quot;
 
@@ -292,54 +147,31 @@ const UserConfirmation = (message, callback) =&gt; {
 
 export default UserConfirmation;
 </code></pre>
-
-              <p>
-                There are a few key things that we needed to happen in our
-                custom component besides the UI. Since
-                <code>BrowserRouter</code> and our custom component is rendered
-                a layer above where our normal application is rendered, we start
-                by initializing a container that we use to directly render the
-                modal. Then we actually define what the container is rendering.
-              </p>
-
-              <p>
-                This is where we create the functionality of closing the modal
-                through either a cancel or confirm action. In our
-                <code>closeModal</code> function we unmount our manually
-                rendered component and either push the user to the next location
-                or stay at the location whether the <code>Prompt</code> was
-                triggered. Fortunately, the callback function that is passed
-                from <code>Prompt</code> makes sending the user to the next
-                location or staying on the page really simple for us. All we
-                need to pass <code>callback</code> is a boolean that tells us
-                whether the user wants to proceed with going to their next
-                location or doesn’t. So, when the user clicks “Cancel” we can
-                call <code>callback(false)</code> and likewise when they click
-                “OK” we call <code>callback(true)</code>.
-              </p>
-
-              <p>And that’s it! You’re done.</p>
-
-              <h3 id="but-i-want-more-than-a-message-and-a-callback">
-                But I want more than a message and a callback
-              </h3>
-
-              <p>
-                This is the part where most people would choose another solution
-                because they want additional customization of the modal that go
-                outside the two props that are given to us.
-              </p>
-
-              <p>
-                Sadly, that is a legitimate concern. We can attempt to alleviate
-                this a little by a manipulating our <code>message</code> prop.
-                Our <code>Prompt</code> component will only accept a string into
-                <code>message</code>. So what we can do here is pass in a
-                stringified JSON object with key-value pairs of things we’d like
-                to have additional control over and then parse them out later.
-              </p>
-
-              <pre><code>&lt;Prompt
+<p>There are a few key things that we needed to happen in our custom component
+besides the UI. Since <code>BrowserRouter</code> and our custom component is rendered a
+layer above where our normal application is rendered, we start by initializing a
+container that we use to directly render the modal. Then we actually define what
+the container is rendering.</p>
+<p>This is where we create the functionality of closing the modal through either a
+cancel or confirm action. In our <code>closeModal</code> function we unmount our manually
+rendered component and either push the user to the next location or stay at the
+location whether the <code>Prompt</code> was triggered. Fortunately, the callback function
+that is passed from <code>Prompt</code> makes sending the user to the next location or
+staying on the page really simple for us. All we need to pass <code>callback</code> is a
+boolean that tells us whether the user wants to proceed with going to their next
+location or doesn’t. So, when the user clicks “Cancel” we can call
+<code>callback(false)</code> and likewise when they click “OK” we call <code>callback(true)</code>.</p>
+<p>And that’s it! You’re done.</p>
+<h3 id="but-i-want-more-than-a-message-and-a-callback">But I want more than a message and a callback</h3>
+<p>This is the part where most people would choose another solution because they
+want additional customization of the modal that go outside the two props that
+are given to us.</p>
+<p>Sadly, that is a legitimate concern. We can attempt to alleviate this a little
+by a manipulating our <code>message</code> prop. Our <code>Prompt</code> component will only accept a
+string into <code>message</code>. So what we can do here is pass in a stringified JSON
+object with key-value pairs of things we’d like to have additional control over
+and then parse them out later.</p>
+<pre><code>&lt;Prompt
    when={when}
    message={
       JSON.stringify(
@@ -353,15 +185,10 @@ export default UserConfirmation;
    }
 /&gt;
 </code></pre>
-
-              <p>
-                Then in our <code>UserConfirmation</code> modal instead of using
-                <code>message</code> directly to display text we need to create
-                a <code>textObj</code> that we use to reference our customized
-                text keys.
-              </p>
-
-              <pre><code>const textObj = JSON.parse(message);
+<p>Then in our <code>UserConfirmation</code> modal instead of using <code>message</code> directly to
+display text we need to create a <code>textObj</code> that we use to reference our
+customized text keys.</p>
+<pre><code>const textObj = JSON.parse(message);
 
 &lt;Dialog
    cancelLabel={textObj.cancelText}
@@ -374,133 +201,37 @@ export default UserConfirmation;
    {textObj.messageText}
 &lt;/Dialog&gt;
 </code></pre>
+<p>Now we’re at least going beyond a one dimensional modal that only allows us to
+customize the prompt message displayed to the user. Similarly, you could use the
+message prop to conditionally determine what to render. If we hadn’t passed for
+example a <code>cancelText</code>, then in our Evergreen <code>Dialog</code> we could choose to set
+<code>hasCancel</code> to false so we’re only rendering a confirm button and not a close
+icon.</p>
+<hr>
+<p>If you have any questions or feedback please leave a comment below! You can
+follow me on <a href="https://medium.com/@ivymarkwell">Medium</a> and
+<a href="https://github.com/ivymarkwell">Github</a> to see more fun stuff I’m working on.
+Special thanks to <a href="https://medium.com/u/f27d2add6165">Joerg Baier</a> for helping
+me work through and understand this solution and many of my other coworkers at
+<a href="https://rabbet.com/">Rabbet</a> for giving me helpful feedback on this article.</p>
+    </div>
+</div>
 
-              <p>
-                Now we’re at least going beyond a one dimensional modal that
-                only allows us to customize the prompt message displayed to the
-                user. Similarly, you could use the message prop to conditionally
-                determine what to render. If we hadn’t passed for example a
-                <code>cancelText</code>, then in our Evergreen
-                <code>Dialog</code> we could choose to set
-                <code>hasCancel</code> to false so we’re only rendering a
-                confirm button and not a close icon.
-              </p>
-
-              <hr />
-
-              <p>
-                If you have any questions or feedback please leave a comment
-                below! You can follow me on
-                <a href="https://medium.com/@ivymarkwell">Medium</a> and
-                <a href="https://github.com/ivymarkwell">Github</a> to see more
-                fun stuff I’m working on. Special thanks to
-                <a href="https://medium.com/u/f27d2add6165">Joerg Baier</a> for
-                helping me work through and understand this solution and many of
-                my other coworkers at
-                <a href="https://rabbet.com/">Rabbet</a> for giving me helpful
-                feedback on this article.
-              </p>
-            </div>
-          </article>
-
-          <hr />
-
-          <div class="post-info">
-            <p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-file-text"
-              >
-                <path
-                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                ></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <polyline points="10 9 9 9 8 9"></polyline></svg
-              >863 Words
-            </p>
-
-            <p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-calendar"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line></svg
-              >2019-09-16 15:00 -0500
-            </p>
-          </div>
-
-          <div class="pagination">
-            <div class="pagination__title">
-              <span class="pagination__title-h"></span>
-              <hr />
-            </div>
-
-            <div class="pagination__buttons">
-              <span class="button previous">
-                <a
-                  href="https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/"
-                >
-                  <span class="button__icon">←</span>
-                  <span class="button__text"
-                    >Server Side Rendered HTML Using Phoenix Liveview</span
-                  >
-                </a>
-              </span>
-
-              <span class="button next">
-                <a
-                  href="https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/"
-                >
-                  <span class="button__text"
-                    >Create and Deploying Your First Hugo Site to Github
-                    Pages</span
-                  >
-                  <span class="button__icon">→</span>
-                </a>
-              </span>
-            </div>
-          </div>
-        </main>
-      </div>
-
-      <footer class="footer">
-        <div class="footer__inner">
-          <div class="footer__content">
-            <span> Powered by <a href="http://gohugo.io">Hugo</a> </span>
-            <span>
-              Made with &#10084; by
-              <a href="https://github.com/rhazdon">rhazdon</a>
-            </span>
-          </div>
+            </main>
         </div>
-      </footer>
+
+
+        <footer class="footer">
+    
+        <span>
+            © 2025 Ivy Markwell, Built with
+            <a href="https://gohugo.io" class="footerLink">Hugo</a> and
+            <a href="https://github.com/LordMathis/hugo-theme-nightfall" class="footerLink">Nightfall</a> theme
+        </span>
+    
+</footer>
     </div>
 
-    <script
-      type="text/javascript"
-      src="/bundle.min.4c3fb12a087ceed4a52cb5d57068a9795c7069617a01ca70f788052ad66e1791779e6c72686e1dc0ca13dc03b0203204b6566bb0dd1ee80de2b7ff4d8fe53db2.js"
-      integrity="sha512-TD&#43;xKgh87tSlLLXVcGipeVxwaWF6Acpw94gFKtZuF5F3nmxyaG4dwMoT3AOwIDIEtlZrsN0e6A3it/9Nj&#43;U9sg=="
-    ></script>
-  </body>
+</body>
+
 </html>

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/posts/</loc>
-    <lastmod>2018-04-29T15:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/about/</loc>
-    <lastmod>2018-04-09T21:26:53-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ivymarkwell.github.io/categories/</loc>
-  </url>
-  
   <url>
     <loc>https://ivymarkwell.github.io/</loc>
-  </url>
-  
-  <url>
+    <lastmod>2025-03-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ivymarkwell.github.io/about/</loc>
+    <lastmod>2025-03-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ivymarkwell.github.io/posts/</loc>
+    <lastmod>2020-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</loc>
+    <lastmod>2020-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</loc>
+    <lastmod>2019-09-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ivymarkwell.github.io/categories/</loc>
+  </url><url>
     <loc>https://ivymarkwell.github.io/tags/</loc>
   </url>
-  
 </urlset>

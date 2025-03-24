@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+Creating and Deploying Your First Hugo Site to Github Pages | Ivy Markwell
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+
+<meta name="generator" content="Hugo 0.145.0">
+
+
+<link rel="canonical" href="https://ivymarkwell.github.io/posts/creating-and-deploying-your-first-hugo-site-to-github-pages/" >
+
+
+
+
+<link href="/css/style.min.5c1fa9bba2d0e854fe30b3d6316ab0114a2a5f25c9a98275badeadb66f2ec725.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="/">
+                <span>me@ivymarkwell.com ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://ivymarkwell.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://ivymarkwell.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Creating and Deploying Your First Hugo Site to Github Pages</h1>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2018-04-29">April 29, 2018</time></dd>
+            
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p><img src="https://cdn-images-1.medium.com/max/2400/1*BDKgDXTBKX3z7x6ij5Z7xQ.jpeg" alt="">
+<span class="figcaption_hack">A local duck I photographed recently</span></p>
+<p>This is a comprehensive guide for creating your first static site using Hugo and
+hosting it on GitHub pages.</p>
+<h3 id="creating-your-site"><strong>Creating your site</strong></h3>
+<p>First, make sure you have <a href="https://gohugo.io/getting-started/installing/">Hugo</a>
+installed on your machine.</p>
+<p>Now you can run these commands to make your first site.</p>
+<p>And there you go! You’ve created your first Hugo site. I mean, there’s nothing
+in it, but still! Let’s take a look.</p>
+<pre><code>hugo server -D
+</code></pre>
+<p>Your web server by default should be hosted at
+<a href="http://localhost:1313/">http://localhost:1313/.</a></p>
+<p>There should be nothing here. We have to add themes, content, and lots of other
+fun stuff.</p>
+<p>If you navigate to <a href="https://themes.gohugo.io/">Hugo,</a> you can see a complete
+list of themes that you can use to style your site. In my own personal Hugo site
+I, use <a href="https://themes.gohugo.io/minimal/">Minimal</a>, so let’s start there. First
+we need to initialize our Github repo, add the theme as a submodule in
+<code>themes/minimal</code> and copy the default config file for that theme.</p>
+<pre><code>git init
+</code></pre>
+<p>Now when you host your server, you should notice that you have the exact <a href="https://themes.gohugo.io/theme/minimal/">demo
+page</a> shown on the theme’s page.</p>
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*fsJe92qbKtKv_BmrjvV_8Q.png" alt="">
+<span class="figcaption_hack">Hugo’s Demo Page</span></p>
+<p>Once that is set up, you should be able to customize it! If you navigate back to
+our Minimal theme’s documentation page you should find a small guide on using
+the parameters to customize the aesthetics of your site.</p>
+<p>Once you’re done making your site *beautiful, *you can navigate back to Hugo’s
+<a href="https://gohugo.io/getting-started/quick-start/">Getting Started page</a> and
+generate actual content for your site. Generating content on your Hugo site is
+super important because Hugo won’t generate your subpages unless there is
+content to display (or if your content is in <code>draft: true</code>).</p>
+<h3 id="deploying"><strong>Deploying</strong></h3>
+<p>This is where things get tricky.</p>
+<p>Github pages doesn’t natively support Hugo like it does Jekyll (another SSG) so
+we’re going to have to create two Github repositories; one to hold your Hugo
+site and files, and one to hold the HTML files we have to generate for your
+actual Github page to read and render. Once you’ve created your remote repos on
+Github <code>&lt;username&gt;.github.io</code> and <code>hugo_site</code> we need to connect them to the
+site we just made.</p>
+<p>First, let’s sync our repo and our code base and add
+<code>&lt;github_username.github.io&gt;</code> as a submodule to our existing repo just like our
+theme.</p>
+<pre><code>git remote add origin
+:&lt;github_username&gt;/hugo_site.git
+git add .
+git commit -m &quot;Initial commit for our Hugo site.&quot;
+</code></pre>
+<p>Remember, this only pushes to <code>hugo_site</code> . We still need to generate our html
+pages for our <code>&lt;github_username&gt;</code> repo. Hugo already has a built in command,
+<code>Hugo</code>, that generates your files to a <code>Public</code> folder. We need to change our
+<code>config.toml</code> file to output our HTML files to our submodule
+<code>&lt;github_username&gt;.github.io</code>.</p>
+<p>Open your <code>config.toml</code>:</p>
+<pre><code>baseURL = &quot;
+&quot;
+languageCode = &quot;en-us&quot;
+title = &quot;Minimal&quot;
+theme = &quot;minimal&quot;
+disqusShortname = &quot;username&quot; # delete this to disable disqus comments
+googleAnalytics = &quot;&quot;
+publishDir = &quot;&lt;github_username&gt;.github.io&quot;
+</code></pre>
+<p>The default <code>config.toml</code> for the Minimal theme should look a little like this.
+However, here we added in <code>publishDir</code>. This tells Hugo where to create our HTML
+files from the content in our Hugo site.</p>
+<p>Let’s generate them by running the following command:</p>
+<pre><code>hugo
+</code></pre>
+<p>And that should be it. Hugo already comes built with a simple command to
+generate the HTML from any of the customizable content in your site. If you look
+in your <code>&lt;github_username&gt;.github.io</code> folder now you should see HTML and CSS
+files, stuff that Github pages understands!</p>
+<p>Before we finally deploy, we need to make sure our remotes our set up correctly
+one last time.</p>
+<pre><code>cd &lt;github_username&gt;.github.io
+git remote -v
+&gt; origin
+:&lt;github_username&gt;/&lt;github_username&gt;.github.io.git (fetch)
+&gt; origin
+:&lt;github_username&gt;/&lt;github_username&gt;.github.io.git (push)
+</code></pre>
+<p>Now let’s host it!</p>
+<pre><code>git add .
+git commit -m &quot;Oh my goodness, I'm hosting my first Hugo website!&quot;
+git push origin master
+</code></pre>
+<p>Go to your Github page <code>&lt;github_username&gt;.github.io</code>. You should see your very
+own custom Hugo site!</p>
+<hr>
+<p>If you have any trouble please leave a comment below! You can follow me on
+<a href="https://medium.com/@ivymarkwell">Medium</a> and
+<a href="https://github.com/ivymarkwell">Github</a> to see more fun stuff I’m working on.
+I’m also a moderator of a programming <a href="https://www.twitch.tv/floatingdev">Twitch
+channel</a> you can check out to see how small
+open source packages are made!</p>
+<p>If you want to see what else our engineering team is working on, come <a href="https://www.getambassador.com/culture-outcare?ref=careers">join
+us</a> at Ambassador!</p>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+        <span>
+            © 2025 Ivy Markwell, Built with
+            <a href="https://gohugo.io" class="footerLink">Hugo</a> and
+            <a href="https://github.com/LordMathis/hugo-theme-nightfall" class="footerLink">Nightfall</a> theme
+        </span>
+    
+</footer>
+    </div>
+
+</body>
+
+</html>

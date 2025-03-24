@@ -6,28 +6,26 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <managingEditor>me@ivymarkwell.com (Ivy Markwell)</managingEditor>
-    <webMaster>me@ivymarkwell.com (Ivy Markwell)</webMaster>
     <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://ivymarkwell.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Server Side Rendered HTML Using Phoenix Liveview</title>
       <link>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</link>
-      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate><author>me@ivymarkwell.com (Ivy Markwell)</author>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
       <guid>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</guid>
       <description></description>
     </item>
     <item>
       <title>Creating a Custom User Confirmation Modal With the React Router Prompt</title>
       <link>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</link>
-      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate><author>me@ivymarkwell.com (Ivy Markwell)</author>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       <guid>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</guid>
       <description></description>
     </item>
     <item>
       <title>Create and Deploying Your First Hugo Site to Github Pages</title>
       <link>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</link>
-      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate><author>me@ivymarkwell.com (Ivy Markwell)</author>
+      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</guid>
       <description></description>
     </item>

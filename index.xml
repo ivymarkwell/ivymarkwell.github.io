@@ -6,35 +6,33 @@
     <description>Recent content on </description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <managingEditor>me@ivymarkwell.com (Ivy Markwell)</managingEditor>
-    <webMaster>me@ivymarkwell.com (Ivy Markwell)</webMaster>
     <lastBuildDate>Sun, 23 Mar 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://ivymarkwell.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About Me</title>
       <link>https://ivymarkwell.github.io/about/</link>
-      <pubDate>Sun, 23 Mar 2025 00:00:00 +0000</pubDate><author>me@ivymarkwell.com (Ivy Markwell)</author>
+      <pubDate>Sun, 23 Mar 2025 00:00:00 +0000</pubDate>
       <guid>https://ivymarkwell.github.io/about/</guid>
       <description>&lt;p&gt;&amp;#x1f44b; Hello! I&amp;rsquo;m Ivy.&lt;/p&gt;&#xA;&lt;p&gt;I am a web application focused software engineer. I primarily work in Elixir and React based projects.&lt;/p&gt;&#xA;&lt;p&gt;In my free time, I enjoy &amp;#x1f3ae; gaming, &amp;#x1f3c3; running, &amp;#x1f9f6; crochet and I often foster kittens &amp;#x1f431; for Austin Pets Alive!&lt;/p&gt;&#xA;&lt;p&gt;Hopefully if you&amp;rsquo;ve stumbled across my site you get some benefit out of my posts.&lt;/p&gt;&#xA;&lt;p&gt;Thanks for reading!&lt;/p&gt;</description>
     </item>
     <item>
       <title>Server Side Rendered HTML Using Phoenix Liveview</title>
       <link>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</link>
-      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate><author>me@ivymarkwell.com (Ivy Markwell)</author>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
       <guid>https://ivymarkwell.github.io/posts/server-side-rendered-html-using-phoenix-liveview/</guid>
       <description></description>
     </item>
     <item>
       <title>Creating a Custom User Confirmation Modal With the React Router Prompt</title>
       <link>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</link>
-      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate><author>me@ivymarkwell.com (Ivy Markwell)</author>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       <guid>https://ivymarkwell.github.io/posts/creating-a-custom-user-confirmation-modal-with-the-react-router-prompt/</guid>
       <description></description>
     </item>
     <item>
       <title>Create and Deploying Your First Hugo Site to Github Pages</title>
       <link>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</link>
-      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate><author>me@ivymarkwell.com (Ivy Markwell)</author>
+      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://ivymarkwell.github.io/posts/create-and-deploying-your-first-hugo-site-to-github-pages/</guid>
       <description></description>
     </item>

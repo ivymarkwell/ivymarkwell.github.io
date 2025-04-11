@@ -92,7 +92,7 @@ Implementing Permission Based Authorization in Absinthe With Custom Graphql Dire
 </span></span><span style="display:flex;"><span>        address  
 </span></span><span style="display:flex;"><span>    }  
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>There are many complex actions this can be broken into. The naive question in a REST system would be: does the user making the request have permission to <code>read</code> the exposed <code>user</code> object?</p>
+</span></span></code></pre></div><p>There are many complex actions this can be broken into. The naive question in a REST system might be: does the user making the request have permission to <code>read</code> the exposed <code>user</code> object?</p>
 <p>In GraphQL we can get much more granular than just basic CRUD permissions. Does the user have access to <code>read</code> the <code>user</code> object? Does the user have access to <code>read</code> the exposed <code>address</code> field under the <code>user</code> object? What about any of the arguments being passed to our query? Does the user have access to pass the argument <code>id</code> in order to query a specific user?</p>
 <p>I decided to <a href="https://hexdocs.pm/absinthe/Absinthe.Schema.Notation.html#directive/3-defining-a-directive">define my own custom Absinthe directive</a>. A directive would allow me to decorate my GraphQL schemas and grant control over user access as the schema resolves the requested fields.</p>
 <p>If you aren’t familiar with GraphQL directives but you are using Absinthe, you likely have already worked with directives and haven’t even realized it! GraphQL offers built in directives that are used in Absinthe. For example:</p>

@@ -78,8 +78,10 @@ Creating and Deploying Your First Hugo Site to Github Pages | Ivy Markwell
     </section>
     
     <div>
-        <p><img src="https://cdn-images-1.medium.com/max/2400/1*BDKgDXTBKX3z7x6ij5Z7xQ.jpeg" alt="">
-<span class="figcaption_hack">A local duck I photographed recently</span></p>
+        <figure style="text-align: center;">
+    <img src='https://cdn-images-1.medium.com/max/2400/1*BDKgDXTBKX3z7x6ij5Z7xQ.jpeg' style="max-width: 100%; height: auto;" />
+    <figcaption style="margin-top: 0.5em;">A local duck I photographed recently</figcaption>
+</figure>
 <p>This is a comprehensive guide for creating your first static site using Hugo and
 hosting it on GitHub pages.</p>
 <h3 id="creating-your-site"><strong>Creating your site</strong></h3>
@@ -88,9 +90,8 @@ installed on your machine.</p>
 <p>Now you can run these commands to make your first site.</p>
 <p>And there you go! You’ve created your first Hugo site. I mean, there’s nothing
 in it, but still! Let’s take a look.</p>
-<pre><code>hugo server -D
-</code></pre>
-<p>Your web server by default should be hosted at
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo server -D
+</span></span></code></pre></div><p>Your web server by default should be hosted at
 <a href="http://localhost:1313/">http://localhost:1313/.</a></p>
 <p>There should be nothing here. We have to add themes, content, and lots of other
 fun stuff.</p>
@@ -99,9 +100,8 @@ list of themes that you can use to style your site. In my own personal Hugo site
 I, use <a href="https://themes.gohugo.io/minimal/">Minimal</a>, so let’s start there. First
 we need to initialize our Github repo, add the theme as a submodule in
 <code>themes/minimal</code> and copy the default config file for that theme.</p>
-<pre><code>git init
-</code></pre>
-<p>Now when you host your server, you should notice that you have the exact <a href="https://themes.gohugo.io/theme/minimal/">demo
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git init
+</span></span></code></pre></div><p>Now when you host your server, you should notice that you have the exact <a href="https://themes.gohugo.io/theme/minimal/">demo
 page</a> shown on the theme’s page.</p>
 <p><img src="https://cdn-images-1.medium.com/max/1600/1*fsJe92qbKtKv_BmrjvV_8Q.png" alt="">
 <span class="figcaption_hack">Hugo’s Demo Page</span></p>
@@ -124,51 +124,42 @@ site we just made.</p>
 <p>First, let’s sync our repo and our code base and add
 <code>&lt;github_username.github.io&gt;</code> as a submodule to our existing repo just like our
 theme.</p>
-<pre><code>git remote add origin
-:&lt;github_username&gt;/hugo_site.git
-git add .
-git commit -m &quot;Initial commit for our Hugo site.&quot;
-</code></pre>
-<p>Remember, this only pushes to <code>hugo_site</code> . We still need to generate our html
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git remote add origin:&lt;github_username&gt;/hugo_site.git
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;Initial commit for our Hugo site.&#34;</span>
+</span></span></code></pre></div><p>Remember, this only pushes to <code>hugo_site</code> . We still need to generate our html
 pages for our <code>&lt;github_username&gt;</code> repo. Hugo already has a built in command,
 <code>Hugo</code>, that generates your files to a <code>Public</code> folder. We need to change our
 <code>config.toml</code> file to output our HTML files to our submodule
 <code>&lt;github_username&gt;.github.io</code>.</p>
 <p>Open your <code>config.toml</code>:</p>
-<pre><code>baseURL = &quot;
-&quot;
-languageCode = &quot;en-us&quot;
-title = &quot;Minimal&quot;
-theme = &quot;minimal&quot;
-disqusShortname = &quot;username&quot; # delete this to disable disqus comments
-googleAnalytics = &quot;&quot;
-publishDir = &quot;&lt;github_username&gt;.github.io&quot;
-</code></pre>
-<p>The default <code>config.toml</code> for the Minimal theme should look a little like this.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ae81ff">baseURL = &#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">languageCode = &#34;en-us&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">title = &#34;Minimal&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">theme = &#34;minimal&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">disqusShortname = &#34;username&#34;</span> <span style="color:#75715e"># delete this to disable disqus comments</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">googleAnalytics = &#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">publishDir = &#34;&lt;github_username&gt;.github.io&#34;</span>
+</span></span></code></pre></div><p>The default <code>config.toml</code> for the Minimal theme should look a little like this.
 However, here we added in <code>publishDir</code>. This tells Hugo where to create our HTML
 files from the content in our Hugo site.</p>
 <p>Let’s generate them by running the following command:</p>
-<pre><code>hugo
-</code></pre>
-<p>And that should be it. Hugo already comes built with a simple command to
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo
+</span></span></code></pre></div><p>And that should be it. Hugo already comes built with a simple command to
 generate the HTML from any of the customizable content in your site. If you look
 in your <code>&lt;github_username&gt;.github.io</code> folder now you should see HTML and CSS
 files, stuff that Github pages understands!</p>
 <p>Before we finally deploy, we need to make sure our remotes our set up correctly
 one last time.</p>
-<pre><code>cd &lt;github_username&gt;.github.io
-git remote -v
-&gt; origin
-:&lt;github_username&gt;/&lt;github_username&gt;.github.io.git (fetch)
-&gt; origin
-:&lt;github_username&gt;/&lt;github_username&gt;.github.io.git (push)
-</code></pre>
-<p>Now let’s host it!</p>
-<pre><code>git add .
-git commit -m &quot;Oh my goodness, I'm hosting my first Hugo website!&quot;
-git push origin master
-</code></pre>
-<p>Go to your Github page <code>&lt;github_username&gt;.github.io</code>. You should see your very
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd &lt;github_username&gt;.github.io
+</span></span><span style="display:flex;"><span>git remote -v
+</span></span><span style="display:flex;"><span>&gt; origin:&lt;github_username&gt;/&lt;github_username&gt;.github.io.git <span style="color:#f92672">(</span>fetch<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>&gt; origin:&lt;github_username&gt;/&lt;github_username&gt;.github.io.git <span style="color:#f92672">(</span>push<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Now let’s host it!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;Oh my goodness, I&#39;m hosting my first Hugo website!&#34;</span>
+</span></span><span style="display:flex;"><span>git push origin master
+</span></span></code></pre></div><p>Go to your Github page <code>&lt;github_username&gt;.github.io</code>. You should see your very
 own custom Hugo site!</p>
 <hr>
 <p>If you have any trouble please leave a comment below! You can follow me on

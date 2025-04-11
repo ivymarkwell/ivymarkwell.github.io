@@ -78,8 +78,10 @@ Server Side Rendered HTML Using Phoenix Liveview | Ivy Markwell
     </section>
     
     <div>
-        <p><img src="https://cdn-images-1.medium.com/max/1200/1*u3zVa7gitgik5q_OYOm_2g.jpeg" alt="">
-<span class="figcaption_hack">“LiveView” television</span></p>
+        <figure style="text-align: center;">
+    <img src="https://cdn-images-1.medium.com/max/1200/1*u3zVa7gitgik5q_OYOm_2g.jpeg" style="max-width: 100%; height: auto;" />
+    <figcaption style="margin-top: 0.5em;">“LiveView” television</figcaption>
+</figure>
 <p>After attending the 2019 Lone Star Elixir conference in Austin, Texas and
 hearing the release of Phoenix LiveView announced, I decided I wanted to jump on
 the train of dabbling in LiveView. At the time, a lot of the examples being
@@ -123,24 +125,30 @@ yourself stateful Elixir rendered HTML.</p>
 <li><code>router.ex</code> — where we assign our LiveView and define the root layout for our
 application.</li>
 </ul>
-<p><img src="https://cdn-images-1.medium.com/max/800/1*9qd9hZihawqZYwLli5LaGw.png" alt="">
-<span class="figcaption_hack"><code>router.ex</code> file</span></p>
+<figure style="text-align: center;">
+    <img src='https://cdn-images-1.medium.com/max/800/1*9qd9hZihawqZYwLli5LaGw.png' style="max-width: 100%; height: auto;" />
+    <figcaption style="margin-top: 0.5em;">`router.ex` file</figcaption>
+</figure>
 <ul>
 <li><code>root.html.eex</code> — our root layout. This is the view that will be rendered on the
 initial request of the application, create the client connection to the server
 via web sockets (this happens specifically in the <code>app.js</code> script), and also
 where the embeded LiveView layout will be rendered later using the <code>&lt;%= @inner_content %&gt;</code> tag.</li>
 </ul>
-<p><img src="https://cdn-images-1.medium.com/max/800/1*qetD22xhWGdQDQ44LkrrAA.png" alt="">
-<span class="figcaption_hack"><code>root.html.eex</code> file</span></p>
+<figure style="text-align: center;">
+    <img src='https://cdn-images-1.medium.com/max/800/1*qetD22xhWGdQDQ44LkrrAA.png' style="max-width: 100%; height: auto;" />
+    <figcaption style="margin-top: 0.5em;">`root.html.eex` file</figcaption>
+</figure>
 <ul>
 <li><code>*_live.ex</code> — the “LiveView”. This is where the state of the application is
 iterated on and where the LiveView layout, <code>.leex</code> template extension, gets
 rendered using the <code>render/1</code> function. <code>render/1</code> can return inline HTML or an
 <code>index.html.leex</code> file.</li>
 </ul>
-<p><img src="https://cdn-images-1.medium.com/max/800/1*w7skEA13qmFFGuO0-WYIQg.png" alt="">
-<span class="figcaption_hack"><code>*_live.ex</code> file</span></p>
+<figure style="text-align: center;">
+    <img src='https://cdn-images-1.medium.com/max/800/1*w7skEA13qmFFGuO0-WYIQg.png' style="max-width: 100%; height: auto;" />
+    <figcaption style="margin-top: 0.5em;">`*_live.ex` file</figcaption>
+</figure>
 <h3 id="recreating-minesweeper-and-implementing-event-handlers">Recreating Minesweeper and implementing event handlers</h3>
 <p>(You can checkout and play my Minesweeper game
 <a href="https://github.com/ivymarkwell/minesweeper">here</a>!)</p>
@@ -155,30 +163,31 @@ assigns.</a>
 Meaning that we can access a particular state key by using
 <code>socket.assigns.state_key</code> (in the LiveView itself) or by accessing it in the
 LiveView template with the notation <code>@state_key</code>.</p>
-<p><img src="https://cdn-images-1.medium.com/max/800/1*8mujz9tJaEc_gDYH1xlqlg.png" alt="">
-<span class="figcaption_hack">Minesweeper!</span></p>
+<figure style="text-align: center;">
+    <img src='https://cdn-images-1.medium.com/max/800/1*8mujz9tJaEc_gDYH1xlqlg.png' style="max-width: 100%; height: auto;" />
+    <figcaption style="margin-top: 0.5em;">Minesweeper!</figcaption>
+</figure>
 <p>Let’s go through an example! A really simple feature is that clicking the face
 on the board will start a new game. In order to do this we need to add an event
 binding in our Live layout, <code>index.html.leex</code>, that will listen to click events,
 and also create the event handler in the LiveView, <code>minesweeper_live.ex</code> file
 itself that will update the state of our application to start the new game.</p>
-<pre><code>// index.html.leex, live layout file
-&lt;span phx-click=&quot;restart-game&quot; class=&quot;status &lt;%= @game_status %&gt;&quot;/&gt;
-
-// minesweeper_live.ex, the LiveView file
-def handle_event(&quot;restart-game&quot;, _key, socket) do
-   # randomly generate initial mines with random coordinates
-   random_initial_x = Enum.random(1..@rows)
-   random_initial_y = Enum.random(1..@columns)
-
-   new_socket =
-      socket
-      |&gt; new_game(random_initial_x, random_initial_y)
-
-   {:noreply, new_socket}
-end
-</code></pre>
-<p>To keep things simple, we can determine whether we’ve started a new game by
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#75715e"># index.html.leex, live layout file</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>span phx<span style="color:#f92672">-</span>click<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;restart-game&#34;</span> class<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;status &lt;%= @game_status %&gt;&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># minesweeper_live.ex, the LiveView file</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> handle_event(<span style="color:#e6db74">&#34;restart-game&#34;</span>, _key, socket) <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e"># randomly generate initial mines with random coordinates</span>
+</span></span><span style="display:flex;"><span>   random_initial_x <span style="color:#f92672">=</span> <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>random(<span style="color:#ae81ff">1</span><span style="color:#f92672">..</span><span style="color:#a6e22e">@rows</span>)
+</span></span><span style="display:flex;"><span>   random_initial_y <span style="color:#f92672">=</span> <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>random(<span style="color:#ae81ff">1</span><span style="color:#f92672">..</span><span style="color:#a6e22e">@columns</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   new_socket <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>      socket
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">|&gt;</span> new_game(random_initial_x, random_initial_y)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   {<span style="color:#e6db74">:noreply</span>, new_socket}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>To keep things simple, we can determine whether we’ve started a new game by
 looking only at the <code>@game_status</code> socket value. <code>@game_status</code> is one of the
 many state keys that I implemented in my <code>mount/3</code> function that were
 initialized when the page was rendered. If the <code>@game_status</code> value is “dead”,
@@ -200,14 +209,13 @@ socket and a list of key/value state attributes and return the updated socket.
 So in the above code snippet, <code>new_game/3</code> is actually just a function that
 returns the output of the <code>assign/3</code> function with the new state attributes like
 this:</p>
-<pre><code>defp new_game(socket, _, _) do
-   assign(socket,
-      game_status: &quot;alive&quot;,
-      ...
-   )
-end
-</code></pre>
-<p>And just like that, we’ve created a click event handler that will start a new
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defp</span> new_game(socket, _, _) <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>   assign(socket,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">game_status</span>: <span style="color:#e6db74">&#34;alive&#34;</span>,
+</span></span><span style="display:flex;"><span>      ...
+</span></span><span style="display:flex;"><span>   )
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>And just like that, we’ve created a click event handler that will start a new
 game!</p>
 <h3 id="advantages-and-disadvantages">Advantages and Disadvantages</h3>
 <p>Let’s start off by saying LiveView is super fast. Not only because of the

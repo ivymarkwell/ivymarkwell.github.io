@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+Implementing Permission Based Authorization in Absinthe With Custom Graphql Directives | Ivy Markwell
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+
+<meta name="generator" content="Hugo 0.145.0">
+
+
+<link rel="canonical" href="https://ivymarkwell.github.io/posts/implementing-permission-based-authorization-in-absinthe-with-custom-graphql-directives/" >
+
+
+
+
+<link href="/css/style.min.5c1fa9bba2d0e854fe30b3d6316ab0114a2a5f25c9a98275badeadb66f2ec725.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="/">
+                <span>me@ivymarkwell.com ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://ivymarkwell.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://ivymarkwell.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Implementing Permission Based Authorization in Absinthe With Custom Graphql Directives</h1>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2025-04-11">April 11, 2025</time></dd>
+            
+            
+        </dl>
+    </section>
+    
+    <div>
+        <figure style="text-align: center;">
+    <img src="https://www.outcyders.net/images/quizzes/22/question10.jpg" style="max-width: 100%; height: auto;" />
+    <figcaption style="margin-top: 0.5em;">Who's That User?</figcaption>
+</figure>
+<p>Quick disclaimer! Writing and learning about this topic was a challenge so this article will be a heavier read. However, I expect if you’ve found yourself here that you are either familiar with Absinthe or have an existing application with a similar authorization problem. With that being said, let’s get into it!</p>
+<h3 id="the-problem">The Problem</h3>
+<p>Imagine the following query that’s exposed in GraphQL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span>query getUser(<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#e6db74">id</span>: <span style="color:#a6e22e">ID</span><span style="color:#f92672">!</span>) {  
+</span></span><span style="display:flex;"><span>    getUser(<span style="color:#e6db74">id</span>: <span style="color:#960050;background-color:#1e0010">$</span>id) {  
+</span></span><span style="display:flex;"><span>        id  
+</span></span><span style="display:flex;"><span>        name  
+</span></span><span style="display:flex;"><span>        address  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There are many complex actions this can be broken into. The naive question in a REST system would be: does the user making the request have permission to <code>read</code> the exposed <code>user</code> object?</p>
+<p>In GraphQL we can get much more granular than just basic CRUD permissions. Does the user have access to <code>read</code> the <code>user</code> object? Does the user have access to <code>read</code> the exposed <code>address</code> field under the <code>user</code> object? What about any of the arguments being passed to our query? Does the user have access to pass the argument <code>id</code> in order to query a specific user?</p>
+<p>I decided to <a href="https://hexdocs.pm/absinthe/Absinthe.Schema.Notation.html#directive/3-defining-a-directive">define my own custom Absinthe directive</a>. A directive would allow me to decorate my GraphQL schemas and grant control over user access as the schema resolves the requested fields.</p>
+<p>If you aren’t familiar with GraphQL directives but you are using Absinthe, you likely have already worked with directives and haven’t even realized it! GraphQL offers built in directives that are used in Absinthe. For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span>field <span style="color:#e6db74">:old_field</span>, <span style="color:#e6db74">:string</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>    deprecate <span style="color:#e6db74">&#34;Please use :new_field&#34;</span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p><code>deprecate</code> is a <a href="https://github.com/absinthe-graphql/absinthe/blob/v1.7.8/lib/absinthe/schema/prototype/notation.ex">built-in directive that Absinthe</a> uses for you to mark that a field should no longer be used directly in the schema.</p>
+<h3 id="defining-our-directive">Defining our directive</h3>
+<p>In my case, directives would allow me to get very granular about the permissions a user needed in order to access a field. Let’s go back to our query example from before. Let’s say we wanted to define permissions around reading a user. However, it’s not that simple. Only certain users should be allowed to query a user, read a user, their name and address, and we want specific permissions to reflect that. So, the goal of this post is to define the following permissions: <code>query_user</code>, <code>read_user</code>, <code>read_user_name</code>, and <code>read_user_address</code>.</p>
+<p>My Absinthe schema looks something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defmodule</span> <span style="color:#a6e22e">MyApp.Schema</span> <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">use</span> <span style="color:#a6e22e">Absinthe.Schema</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  object <span style="color:#e6db74">:user</span> <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    field(<span style="color:#e6db74">:id</span>, non_null(<span style="color:#e6db74">:id</span>))
+</span></span><span style="display:flex;"><span>    field(<span style="color:#e6db74">:name</span>, <span style="color:#e6db74">:string</span>)
+</span></span><span style="display:flex;"><span>    field(<span style="color:#e6db74">:address</span>, <span style="color:#e6db74">:string</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  query <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    field <span style="color:#e6db74">:get_user</span>, <span style="color:#e6db74">:user</span> <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>      arg(<span style="color:#e6db74">:id</span>, non_null(<span style="color:#e6db74">:id</span>))
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      resolve(<span style="color:#66d9ef">fn</span> _, %{<span style="color:#e6db74">id</span>: id}, _ <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>        {<span style="color:#e6db74">:ok</span>, <span style="color:#a6e22e">UserResolver</span><span style="color:#f92672">.</span>get_user(id)}
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">end</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>So I defined a directive that would allow me to pass permissions onto the GraphQL fields and objects themselves. We do this by defining our own prototype schema and then exposing it as our <a href="https://hexdocs.pm/absinthe/Absinthe.Schema.Prototype.html">@prototype_schema</a> in our Absinthe Schema file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defmodule</span> <span style="color:#a6e22e">MyApp.SchemaPrototype</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@moduledoc</span> <span style="color:#e6db74">&#34;&#34;&#34;  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Defines our custom schema directives.  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">use</span> <span style="color:#a6e22e">Absinthe.Schema.Prototype</span>  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@doc</span> <span style="color:#e6db74">&#34;&#34;&#34;  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Authorization directive that allows us to pass a list of permissions to  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    GraphQL fields and objects.  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>  
+</span></span><span style="display:flex;"><span>    directive <span style="color:#e6db74">:auth</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>        arg(<span style="color:#e6db74">:permissions</span>, list_of(<span style="color:#e6db74">:string</span>))  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        on([<span style="color:#e6db74">:field_definition</span>, <span style="color:#e6db74">:object</span>])  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        expand(<span style="color:#66d9ef">fn</span> %{<span style="color:#e6db74">permissions</span>: permissions}, node <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>            %{node <span style="color:#f92672">|</span> <span style="color:#e6db74">__private__</span>: <span style="color:#a6e22e">Keyword</span><span style="color:#f92672">.</span>put(node<span style="color:#f92672">.</span>__private__, <span style="color:#e6db74">:permissions</span>, permissions)}  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>This creates a custom Absinthe directive <code>:auth</code> that allows us to pass a list of string permissions as an argument on any GraphQL fields or objects we define. Then, we can expose our <code>prototype_schema</code> to our Absinthe schema file like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defmodule</span> <span style="color:#a6e22e">MyApp.Schema</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">use</span> <span style="color:#a6e22e">Absinthe.Schema</span>  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@prototype_schema</span> <span style="color:#a6e22e">MyApp.SchemaPrototype</span>  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># query and mutation definitions...  </span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><h3 id="understanding-directives">Understanding directives</h3>
+<p>If you’re wanting to understand more about the Absinthe <code>directive</code> itself, you’re going to have to read some Absinthe source code. You can follow along if you look at our <code>:auth</code> directive. First, we are using the <a href="https://github.com/absinthe-graphql/absinthe/blob/main/lib/absinthe/schema/prototype.ex">use Absinthe.Schema.Prototype</a> to access a macro Absinthe has defined for schema prototypes. When we add our directive all we are basically doing is importing the <a href="https://github.com/absinthe-graphql/absinthe/blob/main/lib/absinthe/schema/prototype/notation.ex">already defined directives code</a> and adding another one.</p>
+<p>Then in the directive itself we are defining <a href="https://hexdocs.pm/elixir/1.12/Macro.html#expand/2">the expand</a> to <a href="https://github.com/absinthe-graphql/absinthe/blob/main/lib/absinthe/phase/document/directives.ex">alter the node that Absinthe is going to pass to us</a> when it applies our directive in the <a href="https://github.com/absinthe-graphql/absinthe/blob/main/lib/absinthe/pipeline.ex#L112">GraphQL pipeline</a>. Now we can focus on what we have access to alter in the node itself. If you look at the node Absinthe gives us, it has a type <a href="https://github.com/absinthe-graphql/absinthe/blob/main/lib/absinthe/blueprint.ex#L55">Blueprint.node_t()</a>. There you can find the following definitions for our node:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#a6e22e">@type</span> node_t <span style="color:#f92672">::</span>  
+</span></span><span style="display:flex;"><span>        t()  
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">|</span> <span style="color:#a6e22e">Blueprint.Directive</span><span style="color:#f92672">.</span>t()          
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">|</span> <span style="color:#a6e22e">Blueprint.Document</span><span style="color:#f92672">.</span>t()  
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">|</span> <span style="color:#a6e22e">Blueprint.Schema</span><span style="color:#f92672">.</span>t()          
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">|</span> <span style="color:#a6e22e">Blueprint.Input</span><span style="color:#f92672">.</span>t()  
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">|</span> <span style="color:#a6e22e">Blueprint.TypeReference</span><span style="color:#f92672">.</span>t()
+</span></span></code></pre></div><p>Depending on what your directive is allowed <code>on</code> will determine what type you’re accessing in your <code>expand/2</code> function. Since our directive is only allowed on <code>field_definition</code> and <code>object</code> we are using the <a href="https://github.com/absinthe-graphql/absinthe/blob/main/lib/absinthe/blueprint/schema/object_type_definition.ex">object type definition</a> and the <a href="https://github.com/absinthe-graphql/absinthe/blob/main/lib/absinthe/blueprint/schema/field_definition.ex">field definition</a>. Either way, our nodes have access to a few common fields we can alter so we can pass information down to our middleware later; <code>__private__</code> being one of them. We are guaranteed this is for <a href="https://hexdocs.pm/absinthe/search.html?q=__private__">internal use only</a> and shouldn’t be altered by Absinthe itself. So we’re able to add a string of <code>permissions</code> on these nodes using the <code>__private__</code> field that we will handle later in our middleware when our fields are getting resolved.</p>
+<p>TLDR; We add a directive that has access to a <code>node_t()</code> . <code>node_t()</code> has access to a <code>__private__</code> field that we can use to pass down information into our middleware later when GraphQL is resolving our fields.</p>
+<p>😅Anyways! Now that our detour is over, let’s get into passing down our permissions so we can actually use them and start writing our authorization logic.</p>
+<h3 id="using-the-directive-via-middleware">Using the directive via middleware</h3>
+<p>If you were paying attention earlier, what’s going to happen after Absinthe applies our directive is that the node we altered earlier is going to be passed down to our <a href="https://hexdocs.pm/absinthe/Absinthe.Middleware.html">middleware</a>. This is because as Absinthe attempts to resolve the fields the user is accessing, we are passing around an <a href="https://hexdocs.pm/absinthe/Absinthe.Resolution.html#t:t/0"><code>Absinthe.Resolution</code></a> struct. If you look closely at the type for <code>Resolution</code> it has a <code>definition</code> field that is our node we altered earlier 👏.</p>
+<p>Now that our directive is defined we can update our GraphQL fields from earlier to use our <code>:auth</code> directive with all the permissions we needed from before!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defmodule</span> <span style="color:#a6e22e">MyApp.Schema</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">use</span> <span style="color:#a6e22e">Absinthe.Schema</span>  
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    object <span style="color:#e6db74">:user</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>        directive(<span style="color:#e6db74">:auth</span>, <span style="color:#e6db74">permissions</span>: [<span style="color:#e6db74">&#34;read_user&#34;</span>])  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        field(<span style="color:#e6db74">:id</span>, non_null(<span style="color:#e6db74">:id</span>))  
+</span></span><span style="display:flex;"><span>        field(<span style="color:#e6db74">:name</span>, <span style="color:#e6db74">:string</span>, <span style="color:#e6db74">directives</span>: [<span style="color:#e6db74">auth</span>: [<span style="color:#e6db74">permissions</span>: [<span style="color:#e6db74">&#34;read_user_name&#34;</span>]]])  
+</span></span><span style="display:flex;"><span>        field(<span style="color:#e6db74">:address</span>, <span style="color:#e6db74">:string</span>, <span style="color:#e6db74">directives</span>: [<span style="color:#e6db74">auth</span>: [<span style="color:#e6db74">permissions</span>: [<span style="color:#e6db74">&#34;read_user_address&#34;</span>]]])  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    query <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>        field <span style="color:#e6db74">:get_user</span>, <span style="color:#e6db74">:user</span>, <span style="color:#e6db74">directives</span>: [<span style="color:#e6db74">auth</span>: [<span style="color:#e6db74">permissions</span>: [<span style="color:#e6db74">&#34;query_user&#34;</span>]]] <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>            arg(<span style="color:#e6db74">:id</span>, non_null(<span style="color:#e6db74">:id</span>))  
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>            resolve(<span style="color:#66d9ef">fn</span> _, %{<span style="color:#e6db74">id</span>: id}, _ <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>                {<span style="color:#e6db74">:ok</span>, <span style="color:#a6e22e">UserResolver</span><span style="color:#f92672">.</span>get_user(id)}  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>Then we are going to create our own custom middleware <code>MyApp.Middleware.Authorization</code> to access our permissions and restrict user access. We can update our <code>MyApp.Schema</code> file again to use that middleware:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defmodule</span> <span style="color:#a6e22e">MyApp.Schema</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">use</span> <span style="color:#a6e22e">Absinthe.Schema</span>  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@prototype_schema</span> <span style="color:#a6e22e">MyApp.SchemaPrototype</span>  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> middleware(middleware, _field, _object) <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>        [<span style="color:#a6e22e">MyApp.Middleware.Authorization</span> <span style="color:#f92672">|</span> middleware]  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># query and mutation definitions...  </span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>Finally… our authorization logic. Let’s write our middleware that will be in charge of allowing users to gain access to the GraphQL fields.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defmodule</span> <span style="color:#a6e22e">MyApp.Middleware.Authorization</span> <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@moduledoc</span> <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  Authorization middleware that verifies users have the necessary permissions to
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  access specific GraphQL fields and objects.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@behaviour</span> <span style="color:#a6e22e">Absinthe.Middleware</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">alias</span> <span style="color:#a6e22e">Absinthe.Blueprint</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">alias</span> <span style="color:#a6e22e">Absinthe.Type.Object</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> call(resolution, _config) <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> resolution<span style="color:#f92672">.</span>context<span style="color:#f92672">.</span>current_user
+</span></span><span style="display:flex;"><span>    user_permissions <span style="color:#f92672">=</span> get_in(user<span style="color:#f92672">.</span>permissions)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># unauthorized_permissions = // Logic to check for missing permissions...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> unauthorized_permissions <span style="color:#f92672">==</span> [] <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>      resolution
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Absinthe.Resolution</span><span style="color:#f92672">.</span>put_result(
+</span></span><span style="display:flex;"><span>        resolution,
+</span></span><span style="display:flex;"><span>        {<span style="color:#e6db74">:error</span>,
+</span></span><span style="display:flex;"><span>         <span style="color:#e6db74">&#34;Unauthorized to perform the following action(s): </span><span style="color:#e6db74">#{</span><span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>join(unauthorized_permissions, <span style="color:#e6db74">&#34;, &#34;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>}
+</span></span><span style="display:flex;"><span>      )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>There’s not a lot going on here yet but you can assume I have my Absinthe project setup to pass around the correct <code>current_user</code> in my resolution context with an imaginary permissions field that contains a list of strings that defines the permissions that user has access to.</p>
+<p>This middleware will check for any permissions that were passed on <code>object</code> or <code>field_definition</code> types and return an error to our resolution if we found the user doesn’t have the right permissions. This will happen as Absinthe resolves each of the fields the user is accessing. Let’s go back to the first query I showed to see how this works.</p>
+<p>As Absinthe resolves the fields in the <code>getUser</code> query, the middleware is triggered up to four times. The middleware can be triggered once for the top level query itself, <code>:get_user</code>, and once for each field being queried, i.e. <code>id</code>, <code>name</code> and <code>address</code>. This matters because depending on what’s currently being resolved will determine what we have access to in our middleware at the time.</p>
+<p>The first thing that will resolve and our middleware will check is the top level query itself, <code>:get_user</code> which has the <code>query_user</code> permission defined using our directive.</p>
+<p>Our <a href="https://hexdocs.pm/absinthe/Absinthe.Resolution.html#module-contents"><code>resolution.definition</code></a> that is getting passed into our middleware will look something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span>%<span style="color:#a6e22e">Absinthe.Blueprint.Document.Field</span>{  
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">name</span>: <span style="color:#e6db74">&#34;getUser&#34;</span>,  
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">arguments</span>: [  
+</span></span><span style="display:flex;"><span>    %<span style="color:#a6e22e">Absinthe.Blueprint.Input.Argument</span>{  
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">name</span>: <span style="color:#e6db74">&#34;id&#34;</span>,  
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">schema_node</span>: %<span style="color:#a6e22e">Absinthe.Type.Argument</span>{  
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">identifier</span>: <span style="color:#e6db74">:id</span>,  
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">name</span>: <span style="color:#e6db74">&#34;id&#34;</span>,  
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">__private__</span>: [],  
+</span></span><span style="display:flex;"><span>        ...remaining_fields  
+</span></span><span style="display:flex;"><span>      },  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  ],  
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">schema_node</span>: %<span style="color:#a6e22e">Absinthe.Type.Field</span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">identifier</span>: <span style="color:#e6db74">:get_user</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">name</span>: <span style="color:#e6db74">&#34;get_user&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">__private__</span>: [<span style="color:#e6db74">permissions</span>: [<span style="color:#e6db74">&#34;query_user&#34;</span>]],  
+</span></span><span style="display:flex;"><span>    ...remaining_fields  
+</span></span><span style="display:flex;"><span>  },  
+</span></span><span style="display:flex;"><span>  ...remaining_fields  
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>It’s important to note that while we are only looking at a query that does not have any permissions on its arguments, that we could have added a permission to an argument for the field, like <code>:id</code>. This matters a lot more when we start considering mutations that could be passing arguments we don’t want to give a user access to. Imagine we had an <code>update_user</code> mutation and we wanted a permission allowing only certain users to update the <code>:address</code>. We could add a directive on the argument and it would be in our resolution definition like the above example. We will come back to this in a minute.</p>
+<p>For now, let’s focus on getting our <code>query_user</code> permission and checking that the user has it!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defp</span> field_permissions_unauthorized(resolution, user_permissions) <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>  resolution<span style="color:#f92672">.</span>definition<span style="color:#f92672">.</span>schema_node<span style="color:#f92672">.</span>__private__  
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">Keyword</span><span style="color:#f92672">.</span>get(<span style="color:#e6db74">:permissions</span>, [])  <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>reject(<span style="color:#66d9ef">fn</span> permission <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>    has_permission?(permission, user_permissions)  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> has_permission?(_, <span style="color:#66d9ef">nil</span>), <span style="color:#e6db74">do</span>: <span style="color:#66d9ef">false</span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> has_permission?(permission, user_permissions) <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>find_value(user_permissions, <span style="color:#66d9ef">false</span>, <span style="color:#66d9ef">fn</span> user_permission <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>    user_permission <span style="color:#f92672">==</span> permission  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>Hopefully the above code is really straight forward to reason about. Using the snippet of our <code>resolution.definition</code> from above, in order to get the permissions off the top level query (or mutation) we access the <code>schema_node.__private__</code> and pluck off any permissions we find! Then, we have a helper function <code>has_permission?/2</code> that is going to be reused to determine if our current user has the permission we parsed out from our node. In this example, we would find the permission <code>query_user</code> defined and check to verify that our current user has that permission. If they didn’t, we would return that permission back from our function so we can use it in our error message from before.</p>
+<p>Now that we have our first permission verified, let’s circle back to our arguments’ permissions discussion.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defp</span> argument_permissions_unauthorized(resolution, user_permissions) <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>  resolution<span style="color:#f92672">.</span>definition<span style="color:#f92672">.</span>arguments  
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">Blueprint</span><span style="color:#f92672">.</span>find(<span style="color:#66d9ef">fn</span>  
+</span></span><span style="display:flex;"><span>    %<span style="color:#a6e22e">Absinthe.Blueprint.Input.Field</span>{  
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">schema_node</span>: %<span style="color:#a6e22e">Absinthe.Type.Field</span>{<span style="color:#e6db74">__private__</span>: [<span style="color:#e6db74">permissions</span>: permissions]}  
+</span></span><span style="display:flex;"><span>    } <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>any?(permissions, <span style="color:#66d9ef">fn</span> permission <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">not</span> has_permission?(permission, provider_permissions)  
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    _ <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">false</span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">|&gt;</span> <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>    %<span style="color:#a6e22e">Absinthe.Blueprint.Input.Field</span>{  
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">schema_node</span>: %<span style="color:#a6e22e">Absinthe.Type.Field</span>{<span style="color:#e6db74">__private__</span>: [<span style="color:#e6db74">permissions</span>: permissions]}  
+</span></span><span style="display:flex;"><span>    } <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>reject(permissions, <span style="color:#66d9ef">fn</span> permission <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>        has_permission?(permission, provider_permissions)  
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    _ <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>      []  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>You can see this function is a little bit more complex than when we were just accessing the permissions on the query itself. Here we are accessing the <code>arguments</code> passed to our query and using Absinthe’s <a href="https://hexdocs.pm/absinthe/Absinthe.Blueprint.html#find/2">Blueprint.find/2</a> to find any arguments that have permissions defined on them. We do this by pattern matching on the <code>schema_node</code> for our <code>Blueprint.Input.Field</code> and checking if the field for the argument has any permissions defined on it. Then if we find a field that has permissions defined on it, we verify if the current user does not have any of those permissions. We do this because <code>Blueprint.find/2</code> will return the first field it finds that returns true. So we want to return any field that does not have the necessary permissions. After our <code>Blueprint.find/2</code> returns a field that is missing permissions, we then iterate through it one more time so that we only return the permissions that were missing from our function.</p>
+<p>This does mean that if there were multiple arguments with permissions defined the user didn’t have access to, there would only be one permission returned in our error. However, this is enough to make sure our endpoint is secure. Regardless of whether a user does not have access to pass one argument or many, since the user does not have access to something being resolved on the top level query, the rest of the query would halt. The same would apply to any mutations that had arguments. If the user doesn’t have access to an argument they are trying to mutate, the mutation will fail before an update can happen.</p>
+<p>Also, you might be thinking that I didn’t define my directive to be used on <code>argument_definition</code> types and you would be correct! Currently my directive is setup so the only arguments that would be passed with permissions would be from an <code>input_object</code>. Any fields with permissions under an <code>input_object</code> would be caught the same way in my <code>argument_permissions_unauthorized/2</code> function. We could iterate on this later so we can pass directives directly on the <code>arg</code> itself but this functionality is enough for me for now.</p>
+<p>Moving on, the next thing that gets resolved in our query are the fields of the object that are getting accessed. The first field to get resolved is <code>id</code>. Let’s take a look at what our <code>resolution.definition</code> looks like when we are resolving <code>id</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span>%<span style="color:#a6e22e">Absinthe.Blueprint.Document.Field</span>{  
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">name</span>: <span style="color:#e6db74">&#34;id&#34;</span>,  
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">schema_node</span>: %<span style="color:#a6e22e">Absinthe.Type.Field</span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">identifier</span>: <span style="color:#e6db74">:id</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">name</span>: <span style="color:#e6db74">&#34;id&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">__private__</span>: [],  
+</span></span><span style="display:flex;"><span>    ...remaining_fields  
+</span></span><span style="display:flex;"><span>  },  
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">parent_type</span>: %<span style="color:#a6e22e">Absinthe.Type.Object</span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">identifier</span>: <span style="color:#e6db74">:user</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">name</span>: <span style="color:#e6db74">&#34;User&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">fields</span>: ...userFields,  
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">__private__</span>: [<span style="color:#e6db74">__absinthe_referenced__</span>: <span style="color:#66d9ef">true</span>, <span style="color:#e6db74">permissions</span>: [<span style="color:#e6db74">&#34;read_user&#34;</span>]],  
+</span></span><span style="display:flex;"><span>    ...remaining_fields  
+</span></span><span style="display:flex;"><span>  }  
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Even though we don’t have any directives defined on the <code>id</code> field itself, there are 2 different things happening here that we could care about. The first is the permission that <em>could</em> have been on <code>id</code>. For example, when our <code>name</code> and <code>address</code> fields get resolved next they will both have permissions here like <code>read_user_name</code> and <code>read_user_address</code>. Any permissions defined on the fields themselves will get caught and verified in our <code>field_permissions_unauthorized/2</code> function so we don’t need to do anything else here!</p>
+<p>However, the second is that our field might have a parent object with restrictive permissions on it. Here you can see we have access to the <code>parent_type</code> which defines any permissions on the parent object of the field. In this case <code>id</code> has the <code>read_user</code> permission defined on it’s <code>user</code> parent object. So let’s deal with that.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defp</span> object_permissions_unauthorized(resolution, provider_permissions) <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>    resolution<span style="color:#f92672">.</span>definition  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">Blueprint</span><span style="color:#f92672">.</span>find(<span style="color:#66d9ef">fn</span> 
+</span></span><span style="display:flex;"><span>        %<span style="color:#a6e22e">Absinthe.Blueprint.Document.Field</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">parent_type</span>: %<span style="color:#a6e22e">Object</span>{<span style="color:#e6db74">__private__</span>: private}
+</span></span><span style="display:flex;"><span>        } <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Keyword</span><span style="color:#f92672">.</span>has_key?(private, <span style="color:#e6db74">:permissions</span>)  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        _ <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">false</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">|&gt;</span> <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>        %<span style="color:#a6e22e">Absinthe.Blueprint.Document.Field</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">parent_type</span>: %<span style="color:#a6e22e">Object</span>{<span style="color:#e6db74">__private__</span>: private}
+</span></span><span style="display:flex;"><span>        } <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>            permissions <span style="color:#f92672">=</span> <span style="color:#a6e22e">Keyword</span><span style="color:#f92672">.</span>get(private, <span style="color:#e6db74">:permissions</span>, [])  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>reject(permissions, <span style="color:#66d9ef">fn</span> permission <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>                has_permission?(permission, provider_permissions)  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">end</span>)  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        _ <span style="color:#f92672">-&gt;</span>  
+</span></span><span style="display:flex;"><span>            []  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>This is almost exactly the same as when we parsed out the argument’s permissions. The only difference here is that we are now looking at the <code>resolution.definition</code> to find any <code>Blueprint.Document.Field</code> with a <code>parent_type</code> that has permissions. In this scenario just like before when we were finding any arguments the user did not have permission to access, this function would return the <code>read_user</code> permission if the user did not have that permission.</p>
+<p>…And that’s it! When looking for permissions on queries or mutations there are only a few things we care about:</p>
+<ul>
+<li>If there are any arguments with permissions defined (none from our query example)</li>
+<li>Whether the field itself has a permission defined (<code>query_user</code>, <code>read_user_name</code>, <code>read_user_address</code>)</li>
+<li>If any of the fields being accessed have a parent object with permissions defined (<code>read_user</code>)</li>
+</ul>
+<p>Now let’s put this all back together in our middleware call:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> call(resolution, _config) <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> resolution<span style="color:#f92672">.</span>context<span style="color:#f92672">.</span>current_user  
+</span></span><span style="display:flex;"><span>    user_permissions <span style="color:#f92672">=</span> get_in(user<span style="color:#f92672">.</span>permissions)  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Unauthorized permissions found from arguments that were passed as input_object GraphQL fields  </span>
+</span></span><span style="display:flex;"><span>    unauthorized_argument_permissions <span style="color:#f92672">=</span>  
+</span></span><span style="display:flex;"><span>        argument_permissions_unauthorized(resolution, user_permissions)  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Unathorized permissions found from defined GraphQL fields  </span>
+</span></span><span style="display:flex;"><span>    unauthorized_field_permissions <span style="color:#f92672">=</span>  
+</span></span><span style="display:flex;"><span>        field_permissions_unauthorized(resolution, user_permissions)  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Unathorized permissions found from defined GraphQL objects  </span>
+</span></span><span style="display:flex;"><span>    unauthorized_object_permissions <span style="color:#f92672">=</span>  
+</span></span><span style="display:flex;"><span>        object_permissions_unauthorized(resolution, user_permissions)  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    unauthorized_permissions <span style="color:#f92672">=</span>  
+</span></span><span style="display:flex;"><span>        unauthorized_argument_permissions <span style="color:#f92672">++</span>  
+</span></span><span style="display:flex;"><span>        unauthorized_field_permissions <span style="color:#f92672">++</span> unauthorized_object_permissions  
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> unauthorized_permissions <span style="color:#f92672">==</span> [] <span style="color:#66d9ef">do</span>  
+</span></span><span style="display:flex;"><span>        resolution  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Absinthe.Resolution</span><span style="color:#f92672">.</span>put_result(  
+</span></span><span style="display:flex;"><span>            resolution,  
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">:error</span>, <span style="color:#e6db74">&#34;Unauthorized to perform the following action(s): </span><span style="color:#e6db74">#{</span><span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>join(unauthorized_permissions, <span style="color:#e6db74">&#34;, &#34;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>}  
+</span></span><span style="display:flex;"><span>        )  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>Our middleware will now verify the user has access to all necessary permissions defined from our directives and return an error message with any of the permissions it found that the user was unauthorized for.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>There are lots of ways you can enforce permissions and this way might not feel like the most efficient for your use case. You could easily handle permissions in your resolver layer where you can check any necessary permissions at one time and return the error you want. There are also loads of libraries that can help you do this.</p>
+<p>Another problem I want to call out is that we can’t always return all the errors at once the way this is currently written. Ideally we want to show the user one error message that includes all the permissions they are lacking so they can take action. Going back to our <code>arguments_permissions_unauthorized/2</code> function, our error when we are accessing unauthorized arguments will only ever contain the first argument it found that was lacking a permission.</p>
+<p>Lastly, depending on where the resolution fails will determine what action the user succeeds in taking. For example, consider a mutation like <code>update_user</code> that requires specific update permissions. If the user has the <code>update_user</code> permission, the mutation itself will succeed even if the user lacks read access to the returned user object. In this scenario, the mutation executes but the requested fields in the response won’t be resolved, and the user will receive an unauthorized error for those fields. This is because of the order in which GraphQL resolves operations. It first resolves the mutation itself and runs the resolver function. Then after the resolver function has run for the mutation, the queried fields will attempt to resolve. It’s at this layer when the queried fields are resolving that the middleware would error, even though the mutation itself succeeded. This seems reasonable but it’s just something to note if you expect the mutation to fail even if the user has update access but not read access.</p>
+<p>However all of those things being said, this directive is very powerful. It allows us to get very granular with how we define permissions without the engineer having to do additional leg work. All our permissions can be enforced through a one line change that we add directly to the GraphQL schema itself. It’s easy to write, easy to review and can give product owners the granularity they want for security access.</p>
+<p>I hope this gives you some deeper insight on how you can utilize Absinthe directives in your system and as always, thanks for reading!</p>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+        <span>
+            © 2025 Ivy Markwell, Built with
+            <a href="https://gohugo.io" class="footerLink">Hugo</a> and
+            <a href="https://github.com/LordMathis/hugo-theme-nightfall" class="footerLink">Nightfall</a> theme
+        </span>
+    
+</footer>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+Standardizing data migrations in Elixir with Monarch | Ivy Markwell
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+
+<meta name="generator" content="Hugo 0.145.0">
+
+
+<link rel="canonical" href="https://ivymarkwell.github.io/posts/standardizing-data-migrations-in-elixir-with-monarch/" >
+
+
+
+
+<link href="/css/style.min.5c1fa9bba2d0e854fe30b3d6316ab0114a2a5f25c9a98275badeadb66f2ec725.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="/">
+                <span>me@ivymarkwell.com ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://ivymarkwell.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://ivymarkwell.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Standardizing data migrations in Elixir with Monarch</h1>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2026-02-02">February 2, 2026</time></dd>
+            
+            
+        </dl>
+    </section>
+    
+    <div>
+        <link href="/styles/common.css" rel="stylesheet">
+<figure style="text-align: center;">
+    <img src="https://cdn-images-1.medium.com/max/1600/1*NgT5kO6Xg_qeqFn9xosJng.jpeg" style="max-width: 100%; height: auto;" />
+    <figcaption style="margin-top: 0.5em;">Real image of who's waiting for you to finish verifying your data migration</figcaption>
+</figure>
+<p>If I had to guess, you&rsquo;re probably using at least three different approaches to do data migrations in production today:</p>
+<ul>
+<li>You put data changes directly into an Ecto migration</li>
+<li>You write one-off scripts, iex into production, and run them manually</li>
+<li>You write Oban workers and enqueue them after a deploy</li>
+</ul>
+<p>At least, that&rsquo;s been the case for me in my Elixir positions. And while this works, there&rsquo;s never been a standard process for engineers to follow.</p>
+<p>The other issue I&rsquo;ve run into is that these don&rsquo;t scale particularly well. Ecto migrations block deploys, while one-off scripts and Oban jobs are entirely manual—easy to forget, hard to track, and tricky to rerun safely.</p>
+<p>These are the issues that led my coworker, <a href="https://www.linkedin.com/in/yiiniiniin/">Chris Bailey</a>, and I to create <a href="https://github.com/Vetspire-VSP/monarch">Monarch</a>. Monarch is an Oban powered process that automatically runs data migrations when your application starts.</p>
+<h3 id="how-monarch-works">How Monarch Works</h3>
+<p>Monarch provides a behaviour that defines the standard interface for your data migration jobs. We call any module that implements this behaviour a Monarch job.</p>
+<p>Once you have your own Monarch jobs, Monarch uses a single entry point to discover and run them. That entry point is <code>Monarch.run/2</code>. When you call <code>Monarch.run/2</code>, Monarch:</p>
+<ol>
+<li>Scans your application for modules that implement the Monarch behaviour</li>
+<li>Checks whether each job has already been run or is currently running</li>
+<li>Automatically enqueues any jobs that still need to be processed using Oban</li>
+</ol>
+<p>No manual steps. No remembering. Your jobs run automatically 🎉</p>
+<h3 id="what-is-a-monarch-job">What Is a Monarch Job?</h3>
+<p>A Monarch job is simply a module that implements the Monarch behaviour. That behaviour is defined by two core functions:</p>
+<h4 id="query0"><code>query/0</code></h4>
+<p>Returns a list of records that still need to be updated. This function must be idempotent and should always return records that still need to be processed.</p>
+<h4 id="update1"><code>update/1</code></h4>
+<p>Takes the records returned by <code>query/0</code> and performs the necessary updates.</p>
+<p>Monarch calls these functions recursively. It runs <code>query/0</code>, passes the results to <code>update/1</code>, and then reruns <code>query/0</code> to check if there are more records remaining. This continues until there are no more records left to be updated.</p>
+<h3 id="starting-monarch">Starting Monarch</h3>
+<p>Since Monarch is built on top of Oban, your application must already have Oban installed and be configured with at least one queue.</p>
+<p>Once that&rsquo;s done, start Monarch by calling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#a6e22e">Monarch</span><span style="color:#f92672">.</span>run(<span style="color:#a6e22e">Oban</span>, <span style="color:#f92672">&lt;</span>my_queue<span style="color:#f92672">&gt;</span>)
+</span></span></code></pre></div><ul>
+<li><code>Oban</code> is the Oban instance you want to use</li>
+<li><code>&lt;my_queue&gt;</code> is the default queue Monarch will use for data migrations</li>
+</ul>
+<p>You can call this run function from a release task or directly in <code>application.ex</code>—anywhere that ensures it runs automatically after a deploy.</p>
+<h3 id="writing-your-first-monarch-job">Writing Your First Monarch Job</h3>
+<p>Once you&rsquo;re using the <code>Monarch.run/2</code> function, your application is ready to start looking for Monarch jobs! You just need to write one.</p>
+<p>Monarch includes a mix task to make getting started easy:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mix monarch --monarch-path myapp/lib/myapp/workers/monarch my_monarch_module
+</span></span></code></pre></div><p>This generates a boilerplate module with the required callbacks:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defmodule</span> <span style="color:#a6e22e">MyApp.Workers.Monarch.MyFirstMonarchJob</span> <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@behaviour</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@impl</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> skip, <span style="color:#e6db74">do</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@impl</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> scheduled_at, <span style="color:#e6db74">do</span>: <span style="color:#a6e22e">DateTime</span><span style="color:#f92672">.</span>utc_now()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@impl</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> query <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Return a chunk of records that still need to be updated</span>
+</span></span><span style="display:flex;"><span>    []
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@impl</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> update(_records) <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Process the returned records</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>From now on, you only need to focus on your data migration logic, which is all you wanted to do anyway.</p>
+<h3 id="simple-example-backfilling-usernames">Simple Example: Backfilling Usernames</h3>
+<p>Here&rsquo;s a real-world example of using Monarch to backfill a newly added username field on an existing users table.</p>
+<p>Assume we&rsquo;ve just introduced this username column and want to make it a required field. Before we can enforce that constraint, we need to backfill existing users to have a default value.</p>
+<p>Our business requirements look like this:</p>
+<ul>
+<li>Every user must have a username</li>
+<li>Usernames must be unique</li>
+<li>The default username should be derived from the user&rsquo;s first and last name</li>
+<li>If multiple users share the same name, we append a number to ensure they are unique</li>
+</ul>
+<p>Below is what our Monarch job could look like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elixir" data-lang="elixir"><span style="display:flex;"><span><span style="color:#66d9ef">defmodule</span> <span style="color:#a6e22e">MyApp.Workers.Monarch.Backfill</span> <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@behaviour</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">import</span> <span style="color:#a6e22e">Ecto.Query</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">alias</span> <span style="color:#a6e22e">MyApp.Repo</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">alias</span> <span style="color:#a6e22e">MyApp.Users.User</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@impl</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> skip, <span style="color:#e6db74">do</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@impl</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> scheduled_at, <span style="color:#e6db74">do</span>: <span style="color:#a6e22e">DateTime</span><span style="color:#f92672">.</span>utc_now()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@impl</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> query <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    from(u <span style="color:#f92672">in</span> <span style="color:#a6e22e">User</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">where</span>: is_nil(u<span style="color:#f92672">.</span>username),
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">limit</span>: <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">Repo</span><span style="color:#f92672">.</span>all()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@impl</span> <span style="color:#a6e22e">Monarch</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> update(users) <span style="color:#f92672">when</span> is_list(users) <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>each(users, <span style="color:#66d9ef">fn</span> user <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>      base_username <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>        [user<span style="color:#f92672">.</span>first_name, user<span style="color:#f92672">.</span>last_name]
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">Enum</span><span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">String</span><span style="color:#f92672">.</span>downcase()
+</span></span><span style="display:flex;"><span>      username <span style="color:#f92672">=</span> unique_username(base_username)
+</span></span><span style="display:flex;"><span>      user
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">.</span>changeset(%{<span style="color:#e6db74">username</span>: username})
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">|&gt;</span> <span style="color:#a6e22e">Repo</span><span style="color:#f92672">.</span>update!()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">defp</span> unique_username(base_username, attempt \\ <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    username <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> attempt <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">do</span>: base_username, <span style="color:#e6db74">else</span>: <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#{</span>base_username<span style="color:#e6db74">}#{</span>attempt<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Repo</span><span style="color:#f92672">.</span>get_by(<span style="color:#a6e22e">User</span>, <span style="color:#e6db74">username</span>: username) <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">nil</span> <span style="color:#f92672">-&gt;</span> username
+</span></span><span style="display:flex;"><span>      _ <span style="color:#f92672">-&gt;</span> unique_username(base_username, attempt <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>Because <code>query/0</code> only returns users without usernames, this job is safe to retry. Once all users are updated, Monarch marks the job as completed.</p>
+<p>Please note, I don&rsquo;t want to focus on the logic of this migration example itself but rather give you ideas on the kind of things you could do with Monarch.</p>
+<h3 id="so-why-monarch">So why Monarch?</h3>
+<p>We&rsquo;ve been using Monarch in production for over a year now and I&rsquo;ve found that it helps me stay focused on actually writing my data migration and not writing the thing that writes my migration.</p>
+<ul>
+<li>
+<p><strong>Standardization</strong>
+Every data migration could follow the same pattern across the codebase.</p>
+</li>
+<li>
+<p><strong>Automatic execution</strong>
+Migrations run automatically after deploys in every single environment and in every instance of production. I write my update one time.</p>
+</li>
+<li>
+<p><strong>Secretly Oban</strong>
+Retries, monitoring, and job tracking come for free using tooling you already have.</p>
+</li>
+<li>
+<p><strong>Idempotent</strong>
+Jobs are always safe to rerun, with no risk of duplicate updates.</p>
+</li>
+</ul>
+<p>However, Monarch is currently at a 0.3.0 release and has a lot more improvements to come.</p>
+<h3 id="things-to-consider">Things to Consider</h3>
+<p>There are a few important considerations worth calling out before adopting Monarch in your own application.</p>
+<p><strong>Race Conditions</strong></p>
+<p>By default, Monarch enqueues all of its jobs into a single default Oban queue you define. If multiple Monarch jobs run concurrently and update the same table, this can cause race conditions.</p>
+<p>For example, imagine two Monarch jobs running at the same time, both operating on the users table we updated from before but updating on different fields. If those jobs overlap, they may attempt to update the same records concurrently and could cause one job to overwrite the other. This can cause a Monarch job to believe it has been completed successfully even though its changes were later overwritten and undone.</p>
+<p>To address this, Monarch allows individual jobs to define a custom queue via an optional callback in the behaviour. For tables that are frequently updated, I&rsquo;d suggest you create a dedicated Oban queue with a <code>global_limit: 1</code> and assign it to those relevant Monarch jobs. Doing this ensures that jobs that could conflict are run one at a time and that any unrelated Monarch jobs can still continue running concurrently on the default queue.</p>
+<p><strong>Jobs that never finish</strong></p>
+<p>Monarch detects jobs that repeatedly return the same data without making progress and discards them. However, the job itself is still not considered completed. This will cause a job to be reinserted on every deployment until it&rsquo;s fixed or removed from the codebase.</p>
+<p>For now, the simplest solution is to either delete the Monarch job or fix the problem so that it can be completed. Handling these &ldquo;stuck&rdquo; jobs is something we plan to address in the future.</p>
+<p><strong>Rolling Back</strong></p>
+<p>Currently, rolling back a Monarch job is manual. Again, I hope to add support for this soon but hopefully this is not an issue you are running into often. However, it is important to note that either the job cannot be rolled back or you would need to be prepared to roll it back manually.</p>
+<hr>
+<p>Thanks for reading! This was meant to be a short, fun article highlighting a library I helped build and how it could be useful for you. If you&rsquo;re looking for more information about Monarch, I&rsquo;d highly suggest you go look at our library. It is open source! 🙂</p>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+        <span>
+            © 2026 Ivy Markwell, Built with
+            <a href="https://gohugo.io" class="footerLink">Hugo</a> and
+            <a href="https://github.com/LordMathis/hugo-theme-nightfall" class="footerLink">Nightfall</a> theme
+        </span>
+    
+</footer>
+    </div>
+
+</body>
+
+</html>
